@@ -1,12 +1,12 @@
 {
   "name": "react-router-paths",
   "version": "0.0.0-0",
-  "description": "React library for briding react-router and @pomle/paths",
+  "description": "React library for bridging react-router and @pomle/paths",
   "author": "Pontus Alexander <pontus.alexander@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/"
+    "url": "git+https://github.com/pomle/react-router-paths"
   },
   "keywords": [],
   "main": "dist/index.js",
@@ -25,7 +25,11 @@
     "test:unit": "cross-env CI=1 jest test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@pomle/paths": "^1.2.0",
+    "react": ">16.8",
+    "react-router-dom": ">6.1.0"
+  },
   "devDependencies": {
     "@pomle/paths": "^1.2.0",
     "@testing-library/jest-dom": "^4.2.4",
