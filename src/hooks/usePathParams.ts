@@ -1,9 +1,9 @@
 import { Path, PathCodec } from '@pomle/paths';
-import { useParams } from 'react-router-dom';
+import { useResolvedPath } from 'react-router-dom';
 import { assertParams } from '../lib/assert';
 
 export function usePathParams<Codec extends PathCodec>(path: Path<Codec>) {
-  const params = useParams();
+  const resolved = useResolvedPath(path.path);
 
-  return assertParams(path, params);
+  return assertParams(path, resolved.pathname);
 }
