@@ -1,16 +1,12 @@
 import { Path } from '@pomle/paths';
-import { AssertionError } from 'assert';
 
 export function assertParams<P extends Path<any>>(
   path: P,
-  params: unknown,
+  pathName: string,
 ): Parameters<P['decode']>[0] {
   try {
-    return path.decode(params as any);
+    return path.parse(pathName);
   } catch (e) {
-    throw new AssertionError({
-      message: `${path.path} can not decode params`,
-      actual: params,
-    });
+    throw new Error(`Path ${path.path} could not parse ${pathName}`);
   }
 }
