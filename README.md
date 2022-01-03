@@ -1,11 +1,1 @@
-# NPM Package
-
-Description
-
-## Usage
-
-### * Install.
-
-```bash
-yarn add
-```
+# Bridge between React Router and Paths
