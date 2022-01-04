@@ -6,7 +6,7 @@ type Values<T extends QueryCodec> = ReturnType<Query<T>['parse']>;
 
 export function useQueryParams<T extends QueryCodec>(
   query: Query<T>,
-): [Values<T>, (values: Values<T>) => void] {
+): [Values<T>, (values: Partial<Values<T>>) => void] {
   const navigate = useNavigate();
   const location = useLocation();
   const search = location.search;
@@ -36,7 +36,7 @@ export function useQueryParams<T extends QueryCodec>(
   }, [getParams]);
 
   const setState = useCallback(
-    (values: Values<T>) => {
+    (values: Partial<Values<T>>) => {
       const data = { ...getParams(), ...values };
       setParams(data);
     },
