@@ -1,9 +1,6 @@
 import { Path } from '@pomle/paths';
 
-export function assertParams<P extends Path<any>>(
-  path: P,
-  pathName: string,
-): Parameters<P['decode']>[0] {
+export function assertParams<P extends Path<any>>(path: P, pathName: string) {
   try {
     return path.parse(pathName);
   } catch (e) {

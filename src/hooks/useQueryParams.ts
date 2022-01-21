@@ -1,47 +1,38 @@
 import { useCallback, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Query, QueryCodec } from '@pomle/paths';
+import { useHistory } from 'react-router';
+import { buildQuery, parseQuery, Query, QueryCodec } from '@pomle/paths';
 
 type Values<T extends QueryCodec> = ReturnType<Query<T>['parse']>;
 
 export function useQueryParams<T extends QueryCodec>(
   query: Query<T>,
 ): [Values<T>, (values: Partial<Values<T>>) => void] {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const search = location.search;
+  const history = useHistory();
+  const search = history.location.search;
 
-  const getParams = useCallback(() => {
+  const params = useMemo(() => {
     return query.parse(search);
   }, [search, query]);
 
-  const setParams = useCallback(
+  const updateQuery = useCallback(
     (source: Values<T>) => {
-      const search = query.build(source);
-      navigate(
-        {
-          ...location,
-          search,
-        },
-        {
-          replace: true,
-        },
-      );
+      const data = { ...parseQuery(search), ...query.encode(source) };
+
+      history.replace({
+        ...history.location,
+        search: buildQuery(data),
+      });
     },
-    [history, query],
+    [history, search, query],
   );
 
-  const state = useMemo(() => {
-    return getParams();
-  }, [getParams]);
-
-  const setState = useCallback(
+  const setParams = useCallback(
     (values: Partial<Values<T>>) => {
-      const data = { ...getParams(), ...values };
-      setParams(data);
+      const data = { ...params, ...values };
+      updateQuery(data);
     },
-    [getParams, setParams],
+    [params, updateQuery],
   );
 
-  return [state, setState];
+  return [params, setParams];
 }
