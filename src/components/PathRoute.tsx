@@ -8,7 +8,7 @@ interface PathRouteProps<Codec extends PathCodec> {
   children: (params: ReturnType<Path<Codec>['decode']>) => React.ReactElement;
 }
 
-export default function PathRoute<T extends PathCodec>({
+export function PathRoute<T extends PathCodec>({
   path,
   children,
 }: PathRouteProps<T>) {
