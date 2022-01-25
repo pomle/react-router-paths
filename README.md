@@ -2,7 +2,7 @@
 
 # Install
 
-This library depends on `react` >= 16.8 (hooks support) and `@pomle/paths`.
+This library depends on `react @ >=16.8` (hooks support) and `@pomle/paths @ >=1.3`.
 
 
 # Usage
@@ -31,6 +31,48 @@ export default function Component() {
   );
 }
 ```
+
+### `params` object
+
+The `params` object contains an array of decoded query param values for each key and codec given to `createQuery`.
+
+Given the below query;
+```ts
+const query = createQuery({
+  words: codecs.string,
+  numbers: codecs.number,
+});
+```
+
+and the URL being `?words=foo&words=bar&numbers=3`, the below `useQueryParams` hook;
+```ts
+const [params, setParams] = useQueryParams(query);
+```
+
+the `params` variable will contain;
+```ts
+{
+  words: ["foo", "bar"],
+  numbers: [3],
+}
+```
+
+Array will always be populated for every defined key and contain zero or more elements.
+
+
+### `setParams` function
+
+The `setParams` function will take an object of the same shape of `params` where keys are optional. If key is defined, and array empty, the query params for that key will be removed. If key is not defined, the query params for that key will be untouched.
+
+Consider the table of examples below.
+
+| Query before          	| `setParams` call                    	| Query after               	|
+|-----------------------	|-------------------------------------	|---------------------------	|
+| `?words=foo`          	| `setParams({words: ["bar"]})`        	| `?words=bar`              	|
+| `?words=foo`          	| `setParams({numbers: [1337]})`       	| `?words=foo&numbers=1337` 	|
+| `?words=foo&number=2` 	| `setParams({numbers: []})`           	| `?words=foo`              	|
+| `?words=foo&number=2` 	| `setParams({words: [], numbers: []})`	| `?`                       	|
+
 
 #### Defining query with `createQuery`
 
