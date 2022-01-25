@@ -13,7 +13,6 @@ This library depends on `react` >= 16.8 (hooks support) and `@pomle/paths`.
 import { codecs, createQuery } from '@pomle/paths';
 import { useQueryParams } from '@pomle/react-router-paths';
 
-// Define query
 const query = createQuery({
   words: codecs.string,
   numbers: codecs.number,
