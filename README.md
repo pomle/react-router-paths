@@ -64,7 +64,7 @@ Array will always be populated for every defined key and contain zero or more el
 
 The `setParams` function will take an object of the same shape of `params` where keys are optional. If key is defined, and array empty, the query params for that key will be removed. If key is not defined, the query params for that key will be untouched.
 
-Consider the table of examples below.
+Examples in the table below may help.
 
 | Query before          	| `setParams` call                    	| Query after               	|
 |-----------------------	|-------------------------------------	|---------------------------	|
@@ -72,6 +72,8 @@ Consider the table of examples below.
 | `?words=foo`          	| `setParams({numbers: [1337]})`       	| `?words=foo&numbers=1337` 	|
 | `?words=foo&number=2` 	| `setParams({numbers: []})`           	| `?words=foo`              	|
 | `?words=foo&number=2` 	| `setParams({words: [], numbers: []})`	| `?`                       	|
+
+You can also consider reading the [test suite](https://github.com/pomle/react-router-paths/blob/main/src/hooks/__tests__/useQueryParams.test.tsx).
 
 
 #### Defining query with `createQuery`
