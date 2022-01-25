@@ -23,7 +23,7 @@ export function PathRoute<T extends PathCodec>({
           return null;
         }
 
-        const params = assertParams(path, match?.params);
+        const params = assertParams(path, { ...match?.params });
         return children(params);
       }}
     </Route>
