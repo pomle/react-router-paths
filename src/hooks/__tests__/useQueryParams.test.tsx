@@ -1,28 +1,8 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
+import { createContext } from '../../mocks/context';
 import { codecs, createQuery } from '@pomle/paths';
 import { useQueryParams } from '../useQueryParams';
-import { Router } from 'react-router';
-import { createMemoryHistory } from 'history';
 import { act } from 'react-test-renderer';
-
-interface ContextProps {
-  entries?: string[];
-  children: React.ReactNode;
-}
-
-function createContext(entries?: string[]) {
-  const history = createMemoryHistory({ initialEntries: entries });
-
-  function Component({ children }: ContextProps) {
-    return <Router history={history}>{children}</Router>;
-  }
-
-  return {
-    Component,
-    history,
-  };
-}
 
 describe('useQueryParams', () => {
   const query = createQuery({
