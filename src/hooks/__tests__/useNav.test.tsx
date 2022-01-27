@@ -106,7 +106,19 @@ describe('useNav', () => {
     });
 
     const nav = hook.result.current;
-    const url = nav.to({ word: 'foo', number: 3 }, {});
+    const url = nav.to({ word: 'foo', number: 3 });
     expect(url).toEqual('/my/path/foo/3');
+  });
+
+  it('uses empty query values', () => {
+    const { Component } = createContext();
+
+    const hook = renderHook(() => useNav(path, query), {
+      wrapper: Component,
+    });
+
+    const nav = hook.result.current;
+    const url = nav.to({ word: 'foo', number: 3 }, {});
+    expect(url).toEqual('/my/path/foo/3?');
   });
 });
