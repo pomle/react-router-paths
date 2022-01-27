@@ -8,6 +8,22 @@ type QueryParams<Codec extends QueryCodec> = Parameters<
   Query<Codec>['build']
 >[0];
 
+export function useNav<P extends PathCodec>(
+  path: Path<P>,
+): {
+  to(p: PathParams<P>): string;
+  go(p: PathParams<P>): void;
+  on(p: PathParams<P>): () => void;
+};
+
+export function useNav<P extends PathCodec, Q extends QueryCodec>(
+  path: Path<P>,
+  query: Query<Q>,
+): {
+  to(p: PathParams<P>, q: QueryParams<Q>): string;
+  go(p: PathParams<P>, q: QueryParams<Q>): void;
+  on(p: PathParams<P>, q: QueryParams<Q>): () => void;
+};
 export function useNav<P extends PathCodec, Q extends QueryCodec>(
   path: Path<P>,
   query?: Query<Q>,
