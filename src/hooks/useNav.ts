@@ -1,24 +1,36 @@
 import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Path, PathCodec } from '@pomle/paths';
+import { Path, PathCodec, Query, QueryCodec } from '@pomle/paths';
 
-type Params<Codec extends PathCodec> = Parameters<Path<Codec>['build']>[0];
+type PathParams<Codec extends PathCodec> = Parameters<Path<Codec>['build']>[0];
 
-export function useNav<Codec extends PathCodec>(path: Path<Codec>) {
+type QueryParams<Codec extends QueryCodec> = Parameters<
+  Query<Codec>['build']
+>[0];
+
+export function useNav<P extends PathCodec, Q extends QueryCodec>(
+  path: Path<P>,
+  query?: Query<Q>,
+) {
   const { push } = useHistory();
 
   return useMemo(() => {
-    function to(params: Params<Codec>) {
-      return path.build(params);
+    function to(p: PathParams<P>, q?: QueryParams<Q>) {
+      let text = path.build(p);
+      if (query && q) {
+        text += '?' + query.build(q);
+      }
+
+      return text;
     }
 
-    function go(params: Params<Codec>) {
-      const url = to(params);
+    function go(p: PathParams<P>, q?: QueryParams<Q>) {
+      const url = to(p, q);
       push(url);
     }
 
-    function on(params: Params<Codec>) {
-      return () => go(params);
+    function on(p: PathParams<P>, q?: QueryParams<Q>) {
+      return () => go(p, q);
     }
 
     return { go, on, to };
