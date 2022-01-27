@@ -20,9 +20,9 @@ export function useNav<P extends PathCodec, Q extends QueryCodec>(
   path: Path<P>,
   query: Query<Q>,
 ): {
-  to(p: PathParams<P>, q: QueryParams<Q>): string;
-  go(p: PathParams<P>, q: QueryParams<Q>): void;
-  on(p: PathParams<P>, q: QueryParams<Q>): () => void;
+  to(p: PathParams<P>, q?: QueryParams<Q>): string;
+  go(p: PathParams<P>, q?: QueryParams<Q>): void;
+  on(p: PathParams<P>, q?: QueryParams<Q>): () => void;
 };
 export function useNav<P extends PathCodec, Q extends QueryCodec>(
   path: Path<P>,
