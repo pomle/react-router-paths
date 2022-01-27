@@ -71,7 +71,7 @@ describe('useNav', () => {
     expect(url).toEqual('/my/path/foo/3');
   });
 
-  it('supports query with path', () => {
+  it('supports path with query', () => {
     const { Component } = createContext();
 
     const hook = renderHook(() => useNav(path, query), {
