@@ -68,5 +68,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@pomle/throb": "^1.0.0"
+  }
 }
