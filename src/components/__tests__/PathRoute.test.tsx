@@ -12,15 +12,17 @@ describe('PathRoute', () => {
 
   type Params = ReturnType<typeof path['parse']>;
 
+  function mounter(params: Params | null) {
+    if (!params) {
+      return null;
+    }
+
+    return <>Mounted {params.count}</>;
+  }
+
   it('calls children with null when path is not matching', () => {
     const { Component } = createContext();
-    const spy = jest.fn((params: Params | null) => {
-      if (!params) {
-        return <>Not mounted</>;
-      }
-
-      return <>Mounted {params.count}</>;
-    });
+    const spy = jest.fn(mounter);
 
     renderer.create(
       <Component>
@@ -33,13 +35,7 @@ describe('PathRoute', () => {
 
   it('calls children with params when path is matching', () => {
     const { Component } = createContext(['/my/path/foo/13']);
-    const spy = jest.fn((params: Params | null) => {
-      if (!params) {
-        return <>Not mounted</>;
-      }
-
-      return <>Mounted {params.count}</>;
-    });
+    const spy = jest.fn(mounter);
 
     renderer.create(
       <Component>
@@ -52,13 +48,7 @@ describe('PathRoute', () => {
 
   it('calls children with params when path is matching partially', () => {
     const { Component } = createContext(['/my/path/bar/16/and/parts']);
-    const spy = jest.fn((params: Params | null) => {
-      if (!params) {
-        return <>Not mounted</>;
-      }
-
-      return <>Mounted {params.count}</>;
-    });
+    const spy = jest.fn(mounter);
 
     renderer.create(
       <Component>
