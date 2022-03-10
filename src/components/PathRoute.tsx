@@ -7,7 +7,7 @@ type Values<Codec extends PathCodec> = ReturnType<Path<Codec>['decode']>;
 
 interface PathRouteProps<Codec extends PathCodec> {
   path: Path<Codec>;
-  children: (params: Values<Codec> | null) => React.ReactElement;
+  children: (params: Values<Codec> | null) => React.ReactElement | null;
 }
 
 export function PathRoute<T extends PathCodec>({
