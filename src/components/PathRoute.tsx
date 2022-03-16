@@ -5,9 +5,13 @@ import { assertParams } from '../lib/assert';
 
 type Values<Codec extends PathCodec> = ReturnType<Path<Codec>['decode']>;
 
+type Match<Codec extends PathCodec> = {
+  params: Values<Codec>;
+};
+
 interface PathRouteProps<Codec extends PathCodec> {
   path: Path<Codec>;
-  children: (params: Values<Codec> | null) => React.ReactElement | null;
+  children: (params: Match<Codec> | null) => React.ReactElement | null;
 }
 
 export function PathRoute<T extends PathCodec>({
@@ -17,8 +21,12 @@ export function PathRoute<T extends PathCodec>({
   return (
     <Route path={path.path}>
       {({ match }: RouteChildrenProps) => {
-        const params = match ? assertParams(path, match.params) : null;
-        return children(params);
+        if (match) {
+          const params = assertParams(path, match.params);
+          return children({ params });
+        }
+
+        return children(null);
       }}
     </Route>
   );

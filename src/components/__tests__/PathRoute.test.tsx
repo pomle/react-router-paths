@@ -10,14 +10,16 @@ describe('PathRoute', () => {
     count: codecs.number,
   });
 
-  type Params = ReturnType<typeof path['parse']>;
+  type Match = {
+    params: ReturnType<typeof path['parse']>;
+  };
 
-  function mounter(params: Params | null) {
-    if (!params) {
+  function mounter(match: Match | null) {
+    if (!match) {
       return null;
     }
 
-    return <>Mounted {params.count}</>;
+    return <>Mounted {match.params.count}</>;
   }
 
   it('calls children with null when path is not matching', () => {
@@ -43,7 +45,7 @@ describe('PathRoute', () => {
       </Component>,
     );
 
-    expect(spy).toHaveBeenCalledWith({ count: 13, with: 'foo' });
+    expect(spy).toHaveBeenCalledWith({ params: { count: 13, with: 'foo' } });
   });
 
   it('calls children with params when path is matching partially', () => {
@@ -56,6 +58,6 @@ describe('PathRoute', () => {
       </Component>,
     );
 
-    expect(spy).toHaveBeenCalledWith({ count: 16, with: 'bar' });
+    expect(spy).toHaveBeenCalledWith({ params: { count: 16, with: 'bar' } });
   });
 });
