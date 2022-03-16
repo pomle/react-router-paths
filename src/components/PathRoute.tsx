@@ -11,7 +11,7 @@ type Match<Codec extends PathCodec> = {
 
 interface PathRouteProps<Codec extends PathCodec> {
   path: Path<Codec>;
-  children: (params: Match<Codec> | null) => React.ReactElement | null;
+  children: (match: Match<Codec> | null) => React.ReactElement | null;
 }
 
 export function PathRoute<T extends PathCodec>({
