@@ -28,11 +28,30 @@ describe('useQueryState', () => {
   it('provides values from params', () => {
     const { Component } = createContext(['/path?word=foo&number=2&number=3']);
 
-    const { result } = renderHook(() => useQueryState(query), {
+    const hook = renderHook(() => useQueryState(query), {
       wrapper: Component,
     });
 
-    const [state] = result.current;
+    const [state] = hook.result.current;
+    expect(state).toEqual({ number: [2, 3], word: ['foo'] });
+  });
+
+  it('provides values from params on initial render only', () => {
+    const { Component, history } = createContext([
+      '/path?word=foo&number=2&number=3',
+    ]);
+
+    const hook = renderHook(() => useQueryState(query), {
+      wrapper: Component,
+    });
+
+    act(() => {
+      history.push('/path?word=foo&number=3');
+
+      hook.rerender();
+    });
+
+    const [state] = hook.result.current;
     expect(state).toEqual({ number: [2, 3], word: ['foo'] });
   });
 
