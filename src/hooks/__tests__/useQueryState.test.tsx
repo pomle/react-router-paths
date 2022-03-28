@@ -79,7 +79,7 @@ describe('useQueryState', () => {
     expect(history.location.search).toEqual('?word=foo&number=2&number=3');
   });
 
-  it('updates using replace when when updating history', async () => {
+  it('updates using replace when updating history', async () => {
     const { Component, history } = createContext([
       '/path?word=foo&number=2&number=3',
     ]);
@@ -142,7 +142,7 @@ describe('useQueryState', () => {
     expect(history.location.search).toEqual('?random=unknown&word=bar');
   });
 
-  it('allows removing values', async () => {
+  it('allows removing values by omitting key', async () => {
     const { Component, history } = createContext([
       '/path?random=unknown&word=foo&number=21',
     ]);
@@ -156,6 +156,31 @@ describe('useQueryState', () => {
     act(() => {
       setState({
         number: [],
+      });
+
+      jest.advanceTimersByTime(250);
+
+      queryHook.rerender();
+    });
+
+    expect(history.location.search).toEqual('?random=unknown&word=foo');
+  });
+
+  it('allows removing values by setting to undefined', async () => {
+    const { Component, history } = createContext([
+      '/path?random=unknown&word=foo&number=21',
+    ]);
+
+    const queryHook = renderHook(() => useQueryState(query), {
+      wrapper: Component,
+    });
+
+    const [, setState] = queryHook.result.current;
+
+    act(() => {
+      setState({
+        number: [],
+        word: undefined,
       });
 
       jest.advanceTimersByTime(250);
