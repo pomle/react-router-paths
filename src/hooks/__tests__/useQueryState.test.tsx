@@ -98,7 +98,7 @@ describe('useQueryState', () => {
     expect(history.location.search).toEqual('?word=foo&number=2&number=3');
   });
 
-  it('updates using replace when when updating history', async () => {
+  it('updates using replace when updating history', async () => {
     const { Component, history } = createContext([
       '/path?word=foo&number=2&number=3',
     ]);
