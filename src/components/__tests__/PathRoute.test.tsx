@@ -45,7 +45,10 @@ describe('PathRoute', () => {
       </Component>,
     );
 
-    expect(spy).toHaveBeenCalledWith({ params: { count: 13, with: 'foo' } });
+    expect(spy).toHaveBeenCalledWith({
+      exact: true,
+      params: { count: 13, with: 'foo' },
+    });
   });
 
   it('calls children with params when path is matching partially', () => {
@@ -58,6 +61,9 @@ describe('PathRoute', () => {
       </Component>,
     );
 
-    expect(spy).toHaveBeenCalledWith({ params: { count: 16, with: 'bar' } });
+    expect(spy).toHaveBeenCalledWith({
+      exact: false,
+      params: { count: 16, with: 'bar' },
+    });
   });
 });

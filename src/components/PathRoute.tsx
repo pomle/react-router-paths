@@ -7,6 +7,7 @@ type Values<Codec extends PathCodec> = ReturnType<Path<Codec>['decode']>;
 
 type Match<Codec extends PathCodec> = {
   params: Values<Codec>;
+  exact: boolean;
 };
 
 interface PathRouteProps<Codec extends PathCodec> {
@@ -23,7 +24,7 @@ export function PathRoute<T extends PathCodec>({
       {({ match }: RouteChildrenProps) => {
         if (match) {
           const params = assertParams(path, match.params);
-          return children({ params });
+          return children({ params, exact: match.isExact });
         }
 
         return children(null);
