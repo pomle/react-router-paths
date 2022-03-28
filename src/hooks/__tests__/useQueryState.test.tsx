@@ -161,7 +161,7 @@ describe('useQueryState', () => {
     expect(history.location.search).toEqual('?random=unknown&word=bar');
   });
 
-  it('allows removing values', async () => {
+  it('allows removing key by giving empty array', async () => {
     const { Component, history } = createContext([
       '/path?random=unknown&word=foo&number=21',
     ]);
