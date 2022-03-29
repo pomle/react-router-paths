@@ -18,8 +18,8 @@
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "test": "run-s test:unit test:lint test:build",
-    "test:build": "run-s build",
+    "test": "yarn run test:unit && yarn run test:lint && yarn run test:build",
+    "test:build": "yarn run build",
     "test:lint": "eslint src --ext .ts,.tsx",
     "test:unit": "cross-env CI=1 jest test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom"
