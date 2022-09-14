@@ -184,6 +184,53 @@ export default function Component() {
 }
 ```
 
+## useNav
+
+With `useNav` you can create navigation objects that are suitable for `<Link>` elements, programatically push history, and create navigation callbacks, with type safety.
+
+The useNav call will return an object with three functions. All of them take the path params as arguments.
+
+- `go` calls history.push.
+- `to` creates a location object compatible.
+- `on` returns a function that calls history.push when called.
+
+```tsx
+import { codecs, createPath } from '@pomle/paths';
+import { useNav } from '@pomle/react-router-paths';
+
+const paths = {
+  books: createPath('/books/:bookId', { bookId: codecs.string }),
+};
+
+export default function Component() {
+  const nav = {
+    books: useNav(paths.books),
+  };
+
+  const handleNav = useCallback(() => {
+    nav.books.go({ bookId: 'foo' });
+  }, [catBookId]);
+
+  return (
+    <ul onMouseWheel={handleNav}>
+      <li>
+        <button onClick={nav.books.on({ bookId: 'bar' })}>
+          Navigate to Bar Book
+        </button>
+      </li>
+
+      {['a', 'b', 'c', 'd'].map((bookId) => {
+        return (
+          <li>
+            <Link to={nav.books.to({ bookId })}>Foo Book</Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+```
+
 #### Defining query with `createQuery`
 
 Using `createQuery` to define queries allows you to share query information between components. This is useful both when you want to build URLs with query params, and when you want to use the same params in multiple components without prop drilling.
