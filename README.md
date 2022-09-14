@@ -2,7 +2,11 @@
 
 # Install
 
-This library depends on `react @ >=16.8` (hooks support) and `@pomle/paths @ >=1.3`.
+This library depends on `react @ >=16.8` (hooks support), `@pomle/paths @ ^1.3`, and `react-router`.
+
+```bash
+yarn add @pomle/react-router-paths @pomle/paths@^1.3 react-router@^5.3.3 react-router-dom@^5.3.3
+```
 
 # Usage
 
