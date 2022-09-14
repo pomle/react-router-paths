@@ -32,3 +32,15 @@ export function PathRoute<T extends PathCodec>({
     </Route>
   );
 }
+
+export function mount<T extends {}>(
+  Component: (props: T) => React.ReactElement,
+) {
+  return function render(match: { params: T } | null) {
+    if (!match) {
+      return null;
+    }
+
+    return React.createElement(Component, match.params);
+  };
+}
