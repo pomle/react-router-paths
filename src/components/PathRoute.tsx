@@ -36,8 +36,8 @@ export function PathRoute<T extends PathCodec>({
 export function mount<T extends {}>(
   Component: (props: T) => React.ReactElement,
 ) {
-  return function render(match: { params: T } | null) {
-    if (!match) {
+  return function render(match: { params: T; exact: boolean } | null) {
+    if (!match || !match.exact) {
       return null;
     }
 
