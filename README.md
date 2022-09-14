@@ -6,6 +6,67 @@ This library depends on `react @ >=16.8` (hooks support) and `@pomle/paths @ >=1
 
 # Usage
 
+This package is similar to React Router, albeit stricter. A decision has been made that path params are considered always required for a path. If you require optional parameters, these must be implemented with query params (see `useQueryParams`).
+
+## PathRoute
+
+`PathRoute` always takes a function that is called with a match object. If the match object exists, the URL matched, and the parsed params is available. If it did not match, the match object is null.
+
+When creating transitions between views we need to keep the elements mounted despite there not being a match. Therefore the render function is called regardless if there was a match or not. The untransitioning is left to the implementer to decide.
+
+```tsx
+import { createPath } from '@pomle/paths';
+import { PathRoute } from '@pomle/react-router-paths';
+import { BrowserRouter } from 'react-router-dom';
+
+const paths = {
+  books: createPath('/books/:bookId', { bookId: codecs.string }),
+};
+
+export function MyRouter() {
+  return (
+    <BrowserRouter>
+      <PathRoute path={paths.books}>
+        {(match) => {
+          if (!match) {
+            // URL did not match, render nothing.
+            return null;
+          }
+
+          // URL did match, params are available.
+          const { bookId } = match.params;
+
+          // Render page.
+          return <BookPage bookId={bookId} />;
+        }}
+      </PathRoute>
+    </BrowserRouter>
+  );
+}
+```
+
+## mount
+
+The mount function is a utility that will provide the logic from the previous example. It requires the params of the path to match the props of the mounted component.
+
+```tsx
+import { createPath } from '@pomle/paths';
+import { PathRoute, mount } from '@pomle/react-router-paths';
+import { BrowserRouter } from 'react-router-dom';
+
+const paths = {
+  books: createPath('/books/:bookId', { bookId: codecs.string }),
+};
+
+export function MyRouter() {
+  return (
+    <BrowserRouter>
+      <PathRoute path={paths.books}>{mount(BookPage)}</PathRoute>
+    </BrowserRouter>
+  );
+}
+```
+
 ## useQueryParams
 
 The hook `useQueryParams` uses a `Query` object from [`@pomle/paths`](https://github.com/pomle/paths) and is similar to `useState` in that it returns a tuple of existing state, and a function to update state in query params.
