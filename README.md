@@ -16,12 +16,24 @@ This package is similar to React Router, albeit stricter. A decision has been ma
 
 `PathRoute` always takes a render function that is called with a match object. If the match object exists, the URL matched, and the parsed params is available. If it did not match, the match object is null.
 
+
+### Match
+
+An object **maybe** passed into render function given to `PathRoute` containing the matched params, and a flag indicating if the path matched exactly, or partly. Partly matching means the actual path was longer than the matching part, and implies there may be better matches. The `Match` object will only be passed if there was a match, otherwise `null` is given.
+
+```tsx
+type Match = {
+  params: {};
+  exact: boolean;
+}
+```
+
 When creating transitions between views we need to keep the elements mounted despite there not being a match. Therefore the render function is called regardless if there was a match or not. Transitioning is left to the implementer to decide.
 
 You **must** return `null` from the render function if you do not want that path to render something. Use the [`mount` function](#mount) when uncertain.
 
 ```tsx
-import { createPath } from '@pomle/paths';
+import { createPath, codecs } from '@pomle/paths';
 import { PathRoute } from '@pomle/react-router-paths';
 import { BrowserRouter } from 'react-router-dom';
 
