@@ -57,6 +57,46 @@ describe('useNav', () => {
     );
   });
 
+  it('returns set function that navigates with replace', () => {
+    const { Component, history } = createContext(['/my/path/bar/4']);
+
+    const hook = renderHook(() => useNav(path), {
+      wrapper: Component,
+    });
+
+    expect(history.length).toBe(1);
+
+    const nav = hook.result.current;
+
+    act(() => {
+      nav.set({ word: 'foo', number: 3 });
+      hook.rerender();
+    });
+
+    expect(history.length).toBe(1);
+    expect(history.entries[0].pathname).toEqual('/my/path/foo/3');
+  });
+
+  it('returns set function that navigates with replace and supports query string', () => {
+    const { Component, history } = createContext(['/my/path/bar/4']);
+
+    const hook = renderHook(() => useNav(path, query), {
+      wrapper: Component,
+    });
+
+    expect(history.length).toBe(1);
+
+    const nav = hook.result.current;
+
+    act(() => {
+      nav.set({ word: 'foo', number: 3 }, { word: ['a', 'b'] });
+      hook.rerender();
+    });
+
+    expect(history.length).toBe(1);
+    expect(history.entries[0].search).toEqual('?word=a&word=b');
+  });
+
   it('returns on function that returns a callback that navigates with push', () => {
     const { Component, history } = createContext();
 
