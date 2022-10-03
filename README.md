@@ -16,7 +16,6 @@ This package is similar to React Router, albeit stricter. A decision has been ma
 
 `PathRoute` always takes a render function that is called with a match object. If the match object exists, the URL matched, and the parsed params is available. If it did not match, the match object is null.
 
-
 ### Match
 
 An object **maybe** passed into render function given to `PathRoute` containing the matched params, and a flag indicating if the path matched exactly, or partly. Partly matching means the actual path was longer than the matching part, and implies there may be better matches. The `Match` object will only be passed if there was a match, otherwise `null` is given.
@@ -25,7 +24,7 @@ An object **maybe** passed into render function given to `PathRoute` containing 
 type Match = {
   params: {};
   exact: boolean;
-}
+};
 ```
 
 When creating transitions between views we need to keep the elements mounted despite there not being a match. Therefore the render function is called regardless if there was a match or not. Transitioning is left to the implementer to decide.
@@ -154,6 +153,50 @@ Examples in the table below may help.
 | `?words=foo&number=2` | `setParams({words: [], numbers: []})` | `?`                       |
 
 You can also consider reading the [test suite](https://github.com/pomle/react-router-paths/blob/main/src/hooks/__tests__/useQueryParams.test.tsx).
+
+#### Single param hook `?query=u2`
+
+The `useQueryParams` hook returns the low level API for operating on query string. Real use cases are more likely to implement something similar to `useState` in query string. The following example shows how to create typical implementation that stores the query for a search field.
+
+```tsx
+import { codecs, createQuery } from '@pomle/paths';
+
+export const search = createQuery({
+  query: codecs.string,
+});
+
+function useQuery(): [string, (text: string) => void] {
+  const [params, setParams] = useQueryParams(search);
+
+  const query = params.query[0] ?? '';
+
+  const setQuery = useCallback(
+    (query: string) => {
+      setParams({
+        // Resets to /path instead of /path?query= when empty
+        query: query.length > 0 ? [query] : [],
+      });
+    },
+    [setParams],
+  );
+
+  return [query, setQuery];
+}
+
+export default function MySearch() {
+  const [query, setQuery] = useQuery();
+
+  return (
+    <form>
+      <input
+        type='text'
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+    </form>
+  );
+}
+```
 
 ## useQueryState
 
