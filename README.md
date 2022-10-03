@@ -247,7 +247,8 @@ With `useNav` you can create navigation objects that are suitable for `<Link>` e
 
 The useNav call will return an object with three functions. All of them take the path params as arguments.
 
-- `go` calls history.push.
+- `go` calls `history.push`.
+- `set` calls `history.replace`.
 - `to` creates a location object compatible.
 - `on` returns a function that calls history.push when called.
 
@@ -264,16 +265,26 @@ export default function Component() {
     books: useNav(paths.books),
   };
 
-  const handleNav = useCallback(() => {
+  const pushURL = useCallback(() => {
     nav.books.go({ bookId: 'foo' });
-  }, [catBookId]);
+  }, []);
+
+  const replaceURL = useCallback(() => {
+    nav.books.set({ bookId: 'bar' });
+  }, []);
 
   return (
-    <ul onMouseWheel={handleNav}>
+    <ul>
       <li>
         <button onClick={nav.books.on({ bookId: 'bar' })}>
           Navigate to Bar Book
         </button>
+      </li>
+      <li>
+        <button onClick={pushURL}>Navigate to Foo book URL</button>
+      </li>
+      <li>
+        <button onClick={replaceURL}>Update URL to point to Bar book</button>
       </li>
 
       {['a', 'b', 'c', 'd'].map((bookId) => {
