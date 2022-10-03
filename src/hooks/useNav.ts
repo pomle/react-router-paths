@@ -50,5 +50,5 @@ export function useNav<P extends PathCodec, Q extends QueryCodec>(
     }
 
     return { go, on, to };
-  }, [push, path]);
+  }, [push, path, query]);
 }
