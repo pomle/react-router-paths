@@ -19,7 +19,7 @@ describe('PathRoute', () => {
       return null;
     }
 
-    return <>Mounted {match.params.count}</>;
+    return <>Mounted {match.params?.count}</>;
   }
 
   it('calls children with null when path is not matching', () => {

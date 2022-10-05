@@ -1,21 +1,24 @@
 import React from 'react';
-import { Router } from 'react-router';
-import { createMemoryHistory } from 'history';
+import { RouterContext } from '../context/RouterContext';
+import { HistoryMock } from './history';
 
 interface ContextProps {
   entries?: string[];
   children: React.ReactNode;
 }
 
-export function createContext(entries?: string[]) {
-  const history = createMemoryHistory({ initialEntries: entries });
+export function createContext(entries: string[] = []) {
+  const window = globalThis.window;
+  const history = new HistoryMock(entries, 'http://mock-host');
+  history.go(0);
 
   function Component({ children }: ContextProps) {
-    return <Router history={history}>{children}</Router>;
+    return <RouterContext history={history}>{children}</RouterContext>;
   }
 
   return {
     Component,
     history,
+    window,
   };
 }

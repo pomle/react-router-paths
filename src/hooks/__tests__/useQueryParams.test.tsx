@@ -90,7 +90,7 @@ describe('useQueryParams', () => {
   });
 
   it('merges values with unknown', async () => {
-    const { Component, history } = createContext([
+    const { Component, window } = createContext([
       '/path?random=unknown&word=foo',
     ]);
 
@@ -107,11 +107,11 @@ describe('useQueryParams', () => {
       queryHook.rerender();
     });
 
-    expect(history.location.search).toEqual('?random=unknown&word=bar');
+    expect(window.location.search).toEqual('?random=unknown&word=bar');
   });
 
   it('allows removing values', async () => {
-    const { Component, history } = createContext([
+    const { Component, window } = createContext([
       '/path?random=unknown&word=foo&number=21',
     ]);
 
@@ -128,6 +128,6 @@ describe('useQueryParams', () => {
       queryHook.rerender();
     });
 
-    expect(history.location.search).toEqual('?random=unknown&word=foo');
+    expect(window.location.search).toEqual('?random=unknown&word=foo');
   });
 });
