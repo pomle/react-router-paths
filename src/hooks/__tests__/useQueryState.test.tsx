@@ -46,7 +46,7 @@ describe('useQueryState', () => {
     });
 
     act(() => {
-      history.push('/path?word=foo&number=3');
+      history.pushState({}, '', '/path?word=foo&number=3');
 
       hook.rerender();
     });
@@ -77,7 +77,7 @@ describe('useQueryState', () => {
   });
 
   it('does not update search params immediately', async () => {
-    const { history, Component } = createContext([
+    const { window, Component } = createContext([
       '/path?word=foo&number=2&number=3',
     ]);
 
@@ -95,11 +95,11 @@ describe('useQueryState', () => {
       hook.rerender();
     });
 
-    expect(history.location.search).toEqual('?word=foo&number=2&number=3');
+    expect(window.location.search).toEqual('?word=foo&number=2&number=3');
   });
 
   it('updates using replace when updating history', async () => {
-    const { Component, history } = createContext([
+    const { Component, history, window } = createContext([
       '/path?word=foo&number=2&number=3',
     ]);
 
@@ -123,7 +123,7 @@ describe('useQueryState', () => {
     });
 
     expect(history.length).toBe(1);
-    expect(history.location.search).toEqual('?word=bar&number=2');
+    expect(window.location.search).toEqual('?word=bar&number=2');
   });
 
   it('does not contain unknown values', async () => {
@@ -138,7 +138,7 @@ describe('useQueryState', () => {
   });
 
   it('merges values with unknown', async () => {
-    const { Component, history } = createContext([
+    const { Component, window } = createContext([
       '/path?random=unknown&word=foo',
     ]);
 
@@ -158,11 +158,11 @@ describe('useQueryState', () => {
       queryHook.rerender();
     });
 
-    expect(history.location.search).toEqual('?random=unknown&word=bar');
+    expect(window.location.search).toEqual('?random=unknown&word=bar');
   });
 
   it('allows removing key by giving empty array', async () => {
-    const { Component, history } = createContext([
+    const { Component, window } = createContext([
       '/path?random=unknown&word=foo&number=21',
     ]);
 
@@ -182,6 +182,6 @@ describe('useQueryState', () => {
       queryHook.rerender();
     });
 
-    expect(history.location.search).toEqual('?random=unknown&word=foo');
+    expect(window.location.search).toEqual('?random=unknown&word=foo');
   });
 });

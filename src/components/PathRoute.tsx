@@ -1,7 +1,6 @@
-import React from 'react';
-import { Route, RouteChildrenProps } from 'react-router-dom';
+import React, { useMemo } from 'react';
 import { Path, PathCodec } from '@pomle/paths';
-import { assertParams } from '../lib/assert';
+import { useLocation } from '../context/RouterContext';
 
 type Values<Codec extends PathCodec> = ReturnType<Path<Codec>['decode']>;
 
@@ -19,18 +18,28 @@ export function PathRoute<T extends PathCodec>({
   path,
   children,
 }: PathRouteProps<T>) {
-  return (
-    <Route path={path.path}>
-      {({ match }: RouteChildrenProps) => {
-        if (match) {
-          const params = assertParams(path, match.params);
-          return children({ params, exact: match.isExact });
-        }
+  const location = useLocation();
+  const pathname = location.pathname;
 
-        return children(null);
-      }}
-    </Route>
-  );
+  const match = useMemo(() => {
+    const diff = path.match(pathname);
+    if (diff < 0) {
+      return null;
+    }
+
+    const params = path.parse(pathname);
+
+    if (params === null) {
+      return null;
+    }
+
+    return {
+      exact: diff === 0,
+      params,
+    };
+  }, [path, pathname]);
+
+  return children(match);
 }
 
 export function mount<T extends {}>(

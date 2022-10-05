@@ -1,7 +1,7 @@
 {
   "name": "@pomle/react-router-paths",
-  "version": "0.5.0",
-  "description": "React library for bridging react-router and @pomle/paths",
+  "version": "0.6.0-0",
+  "description": "React library providing Routing to bridge React and @pomle/paths",
   "author": "Pontus Alexander <pontus.alexander@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -24,20 +24,16 @@
     "@pomle/throb": "^1.0.0"
   },
   "peerDependencies": {
-    "@pomle/paths": "^1.3.1",
-    "react": ">=16.8",
-    "react-router": "^5.3.3",
-    "react-router-dom": "^5.3.3"
+    "@pomle/paths": "^1.4.0",
+    "react": ">=16.8"
   },
   "devDependencies": {
-    "@pomle/paths": "^1.3.1",
+    "@pomle/paths": "^1.4.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/debounce": "^1.2.1",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.38",
-    "@types/react-router": "^5.1.18",
-    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "babel-eslint": "^10.0.3",
@@ -55,8 +51,6 @@
     "microbundle": "^0.14.2",
     "prettier": "^2.0.4",
     "react": "^17.0.2",
-    "react-router": "^5.3.3",
-    "react-router-dom": "^5.3.3",
     "react-test-renderer": "^17.0.2",
     "ts-jest": "^27.0.5",
     "typescript": "^4.1.0"
