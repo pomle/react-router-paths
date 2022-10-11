@@ -71,8 +71,7 @@ The mount function is a utility that will provide the logic from the previous ex
 
 ```tsx
 import { createPath } from '@pomle/paths';
-import { PathRoute, mount } from '@pomle/react-router-paths';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterContext, PathRoute, mount } from '@pomle/react-router-paths';
 
 const paths = {
   books: createPath('/books/:bookId', { bookId: codecs.string }),
@@ -80,9 +79,9 @@ const paths = {
 
 export function MyRouter() {
   return (
-    <BrowserRouter>
+    <RouterContext history={window.history}>
       <PathRoute path={paths.books}>{mount(BookPage)}</PathRoute>
-    </BrowserRouter>
+    </RouterContext>
   );
 }
 ```
