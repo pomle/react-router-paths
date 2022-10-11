@@ -1,16 +1,20 @@
-# Bridge between React Router and [Paths](https://github.com/pomle/paths)
+# Router for React powered by [Paths](https://github.com/pomle/paths)
 
 # Install
 
-This library depends on `react @ >=16.8` (hooks support), `@pomle/paths @ ^1.3`, and `react-router`.
+This library depends on `react @ >=16.8` (hooks support), `@pomle/paths @ ^1.3`.
 
 ```bash
-yarn add @pomle/react-router-paths @pomle/paths@^1.3 react-router@^5.3.3 react-router-dom@^5.3.3
+yarn add @pomle/paths@1.4 @pomle/react-router-paths
 ```
 
 # Usage
 
 This package is similar to React Router, albeit stricter. A decision has been made that path params are considered always required for a path. If you require optional parameters, these must be implemented with query params (see [`useQueryParams` hook](#usequeryparams)).
+
+## RouterContext
+
+
 
 ## PathRoute
 
@@ -33,8 +37,7 @@ You **must** return `null` from the render function if you do not want that path
 
 ```tsx
 import { createPath, codecs } from '@pomle/paths';
-import { PathRoute } from '@pomle/react-router-paths';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterContext, PathRoute } from '@pomle/react-router-paths';
 
 const paths = {
   books: createPath('/books/:bookId', { bookId: codecs.string }),
@@ -42,7 +45,7 @@ const paths = {
 
 export function MyRouter() {
   return (
-    <BrowserRouter>
+    <RouterContext history={window.history}>
       <PathRoute path={paths.books}>
         {(match) => {
           if (!match) {
@@ -57,7 +60,7 @@ export function MyRouter() {
           return <BookPage bookId={bookId} />;
         }}
       </PathRoute>
-    </BrowserRouter>
+    </RouterContext>
   );
 }
 ```
