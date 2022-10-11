@@ -18,60 +18,73 @@ class EventEmitter {
     });
   }
 
-  emit(name: string, event: Event) {
+  dispatchEvent(event: Event) {
     this.listeners.forEach((listener) => {
-      if (name === listener.name) {
+      if (event.type === listener.name) {
         listener.fn(event);
       }
     });
+
+    return true;
   }
 }
 
-globalThis.window.location = (new URL('http://mock') as unknown) as Location;
+class Window extends EventEmitter {
+  location: Location = (new URL('http://mock/') as unknown) as Location;
+}
 
-export class HistoryMock extends EventEmitter implements globalThis.History {
-  scrollRestoration: ScrollRestoration = 'auto';
-  state: any = {};
+export function createHistoryMock(entries: string[]) {
+  const window = new Window();
 
-  baseURL = '';
-  index = 0;
-  entries: URL[] = [];
+  class HistoryMock extends EventEmitter implements globalThis.History {
+    scrollRestoration: ScrollRestoration = 'auto';
+    state: any = {};
 
-  constructor(entries: string[], baseURL = '') {
-    super();
+    baseURL = '';
+    index = 0;
+    entries: URL[] = [];
 
-    this.baseURL = baseURL;
-    this.entries = entries.map((url) => new URL(this.baseURL + url));
+    constructor(entries: string[], baseURL = '') {
+      super();
+
+      this.baseURL = baseURL;
+      this.entries = entries.map((url) => new URL(this.baseURL + url));
+    }
+
+    get length() {
+      return this.entries.length;
+    }
+
+    go(delta: number) {
+      this.index += delta;
+      const url = this.entries[this.index];
+      window.location = (url as unknown) as Location;
+      window.dispatchEvent(new Event('popstate'));
+    }
+
+    forward() {
+      this.go(1);
+    }
+
+    back() {
+      this.go(-1);
+    }
+
+    pushState(_: any, __: string, url: string | URL): void {
+      const location = new URL(this.baseURL + url);
+      this.entries.splice(this.index + 1, this.entries.length, location);
+      this.go(1);
+    }
+
+    replaceState(_: any, __: string, url: string | URL): void {
+      const location = new URL(this.baseURL + url);
+      this.entries.splice(this.index, 1, location);
+      this.go(0);
+    }
   }
 
-  get length() {
-    return this.entries.length;
-  }
-
-  go(delta: number) {
-    this.index += delta;
-    const url = this.entries[this.index];
-    globalThis.window.location = (url as unknown) as Location;
-    this.emit('popstate', new Event('popstate'));
-  }
-
-  forward() {
-    this.go(1);
-  }
-
-  back() {
-    this.go(-1);
-  }
-
-  pushState(_: any, __: string, url: string | URL): void {
-    const location = new URL(this.baseURL + url);
-    this.entries.splice(this.index + 1, this.entries.length, location);
-    this.go(1);
-  }
-
-  replaceState(_: any, __: string, url: string | URL): void {
-    const location = new URL(this.baseURL + url);
-    this.entries.splice(this.index, 1, location);
-    this.go(0);
-  }
+  return {
+    history: new HistoryMock(entries, 'http://mock'),
+    window,
+  };
 }
