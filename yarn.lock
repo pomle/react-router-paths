@@ -1647,9 +1647,9 @@
     fastq "^1.6.0"
 
 "@pomle/paths@^1.4.0":
-  version "1.4.0-2"
-  resolved "https://registry.yarnpkg.com/@pomle/paths/-/paths-1.4.0-2.tgz#68e0d3acef75b776f6e8f48baa8c487c2641ab96"
-  integrity sha512-0XRGq+Grtai3G6k+Orq96Bh8WY26x82Mdy9CXFkNdceAoL5c/Udja5xticT56EAV+rx1WomGIR/rEhONmaQroA==
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@pomle/paths/-/paths-1.4.0.tgz#6c318bfdf6636803869dd8b38b82cd5520027217"
+  integrity sha512-aOVnXfIM4k68o4FUUEheg4ZSgPcm/owr8pmsFu2G7J+yx0Bf+MZWcbZD4P6+Wz2U6SAxViSwx1vw6+0y+YLZdg==
 
 "@pomle/throb@^1.0.0":
   version "1.0.0"
