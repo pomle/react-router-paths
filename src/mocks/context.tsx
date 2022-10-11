@@ -7,10 +7,8 @@ interface ContextProps {
   children: React.ReactNode;
 }
 
-export function createContext(entries: string[] = []) {
-  const window = globalThis.window;
+export function createContext(entries: string[] = ['/']) {
   const history = new HistoryMock(entries, 'http://mock-host');
-  history.go(0);
 
   function Component({ children }: ContextProps) {
     return <RouterContext history={history}>{children}</RouterContext>;
@@ -19,6 +17,6 @@ export function createContext(entries: string[] = []) {
   return {
     Component,
     history,
-    window,
+    window: globalThis.window,
   };
 }
