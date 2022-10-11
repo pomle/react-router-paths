@@ -56,6 +56,8 @@ export function RouterContext({
   }, []);
 
   useEffect(() => {
+    updateLocation();
+
     window.addEventListener('popstate', updateLocation);
 
     return () => {
