@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouterContext } from '../context/RouterContext';
-import { HistoryMock } from './history';
+import { createHistoryMock } from './history';
 
 interface ContextProps {
   entries?: string[];
@@ -8,15 +8,20 @@ interface ContextProps {
 }
 
 export function createContext(entries: string[] = ['/']) {
-  const history = new HistoryMock(entries, 'http://mock-host');
+  const { history, window } = createHistoryMock(entries);
+  history.go(0);
 
   function Component({ children }: ContextProps) {
-    return <RouterContext history={history}>{children}</RouterContext>;
+    return (
+      <RouterContext history={history} window={window}>
+        {children}
+      </RouterContext>
+    );
   }
 
   return {
     Component,
     history,
-    window: globalThis.window,
+    window,
   };
 }

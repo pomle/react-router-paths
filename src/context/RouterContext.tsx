@@ -12,6 +12,11 @@ type BrowserHistory = Pick<
   'back' | 'forward' | 'go' | 'pushState' | 'replaceState'
 >;
 
+type BrowserWindow = Pick<
+  globalThis.Window,
+  'location' | 'addEventListener' | 'removeEventListener' | 'dispatchEvent'
+>;
+
 type URLCompatible = { toString(): string };
 
 type History = {
@@ -29,19 +34,21 @@ type Router = {
 
 const Context = createContext<Router | null>(null);
 
-function createLocation() {
-  return new URL(window.location.href);
-}
-
 interface RouterContextProps {
   history: BrowserHistory;
   children: React.ReactNode;
+  window?: BrowserWindow;
 }
 
 export function RouterContext({
   children,
   history: source,
+  window = globalThis.window,
 }: RouterContextProps) {
+  const createLocation = useCallback(() => {
+    return new URL(window.location.href);
+  }, [window]);
+
   const [location, setLocation] = useState<URL>(createLocation);
 
   const updateLocation = useCallback(() => {
@@ -60,11 +67,11 @@ export function RouterContext({
     return {
       push(url: URLCompatible) {
         source.pushState(null, '', url.toString());
-        updateLocation();
+        window.dispatchEvent(new Event('popstate'));
       },
       replace(url: URLCompatible) {
         source.replaceState(null, '', url.toString());
-        updateLocation();
+        window.dispatchEvent(new Event('popstate'));
       },
       go: source.go,
       back: source.back,
