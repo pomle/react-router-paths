@@ -1,6 +1,6 @@
 {
   "name": "@pomle/react-router-paths",
-  "version": "0.6.0-1",
+  "version": "0.6.0-2",
   "description": "React library providing Routing to bridge React and @pomle/paths",
   "author": "Pontus Alexander <pontus.alexander@gmail.com>",
   "license": "MIT",
