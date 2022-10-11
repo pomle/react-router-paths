@@ -1,4 +1,35 @@
-export class HistoryMock implements globalThis.History {
+type EventHandler = (event: Event) => void;
+
+type Listener = {
+  name: string;
+  fn: EventHandler;
+};
+
+class EventEmitter {
+  listeners: Listener[] = [];
+
+  addEventListener(name: string, fn: EventHandler) {
+    this.listeners.push({ name, fn });
+  }
+
+  removeEventListener(name: string, fn: EventHandler) {
+    this.listeners = this.listeners.filter((listener) => {
+      return listener.name !== name && listener.fn !== fn;
+    });
+  }
+
+  emit(name: string, event: Event) {
+    this.listeners.forEach((listener) => {
+      if (name === listener.name) {
+        listener.fn(event);
+      }
+    });
+  }
+}
+
+globalThis.window.location = (new URL('http://mock') as unknown) as Location;
+
+export class HistoryMock extends EventEmitter implements globalThis.History {
   scrollRestoration: ScrollRestoration = 'auto';
   state: any = {};
 
@@ -7,6 +38,8 @@ export class HistoryMock implements globalThis.History {
   entries: URL[] = [];
 
   constructor(entries: string[], baseURL = '') {
+    super();
+
     this.baseURL = baseURL;
     this.entries = entries.map((url) => new URL(this.baseURL + url));
   }
@@ -18,8 +51,8 @@ export class HistoryMock implements globalThis.History {
   go(delta: number) {
     this.index += delta;
     const url = this.entries[this.index];
-    globalThis.location.hash = url.hash;
-    globalThis.location.search = url.search;
+    globalThis.window.location = (url as unknown) as Location;
+    this.emit('popstate', new Event('popstate'));
   }
 
   forward() {
@@ -32,7 +65,7 @@ export class HistoryMock implements globalThis.History {
 
   pushState(_: any, __: string, url: string | URL): void {
     const location = new URL(this.baseURL + url);
-    this.entries.splice(this.index, this.entries.length, location);
+    this.entries.splice(this.index + 1, this.entries.length, location);
     this.go(1);
   }
 

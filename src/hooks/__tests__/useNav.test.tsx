@@ -15,7 +15,7 @@ describe('useNav', () => {
     number: codecs.number,
   });
 
-  it.only('returns go function that navigates with push', () => {
+  it('returns go function that navigates with push', () => {
     const { Component, history } = createContext();
 
     const hook = renderHook(() => useNav(path), {
