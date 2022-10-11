@@ -1,4 +1,4 @@
-# Router for React powered by [Paths](https://github.com/pomle/paths)
+# Typed Router for React powered by [Paths](https://github.com/pomle/paths)
 
 # Install
 
