@@ -1,14 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import { buildQuery, parseQuery, Query, QueryCodec } from '@pomle/paths';
-import { useHistory, useLocation } from '../context/RouterContext';
+import { useRouter } from '../context/RouterContext';
 
 type Values<T extends QueryCodec> = ReturnType<Query<T>['parse']>;
 
 export function useQueryParams<T extends QueryCodec>(
   query: Query<T>,
 ): [Values<T>, (values: Partial<Values<T>>) => void] {
-  const location = useLocation();
-  const history = useHistory();
+  const { location, history, window } = useRouter();
   const search = location.search;
 
   const params = useMemo(() => {
@@ -27,10 +26,11 @@ export function useQueryParams<T extends QueryCodec>(
 
   const setParams = useCallback(
     (values: Partial<Values<T>>) => {
+      const params = query.parse(window.location.search);
       const data = { ...params, ...values };
       updateQuery(data);
     },
-    [params, updateQuery],
+    [updateQuery],
   );
 
   return [params, setParams];
