@@ -14,23 +14,24 @@ export function useQueryParams<T extends QueryCodec>(
     return query.parse(search);
   }, [search, query]);
 
-  const updateQuery = useCallback(
-    (source: Values<T>) => {
-      const data = { ...parseQuery(search), ...query.encode(source) };
+  const setParams = useCallback(
+    (source: Partial<Values<T>>) => {
+      const search = window.location.search;
+
+      // Raw data - may be owned by third party
+      const raw = parseQuery(search);
+
+      // Params owned by us
+      const ours = query.parse(search);
+
+      // Params being injected
+      const next = query.encode({ ...ours, ...source });
+
       const url = new URL(location.href);
-      url.search = buildQuery(data);
+      url.search = buildQuery({ ...raw, ...next });
       history.replace(url);
     },
-    [history, search, query, location],
-  );
-
-  const setParams = useCallback(
-    (values: Partial<Values<T>>) => {
-      const params = query.parse(window.location.search);
-      const data = { ...params, ...values };
-      updateQuery(data);
-    },
-    [updateQuery],
+    [history, query],
   );
 
   return [params, setParams];
