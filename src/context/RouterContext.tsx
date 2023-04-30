@@ -30,6 +30,7 @@ type History = {
 type Router = {
   location: URL;
   history: History;
+  window: BrowserWindow;
 };
 
 const Context = createContext<Router | null>(null);
@@ -84,6 +85,7 @@ export function RouterContext({
   const value = {
     location,
     history,
+    window,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
