@@ -130,4 +130,26 @@ describe('useQueryParams', () => {
 
     expect(window.location.search).toEqual('?random=unknown&word=foo');
   });
+
+  it('supports synchronous immediate updates', async () => {
+    const { Component, window } = createContext(['/path?word=foo&number=21']);
+
+    const queryHook = renderHook(() => useQueryParams(query), {
+      wrapper: Component,
+    });
+
+    const [, setParams] = queryHook.result.current;
+
+    act(() => {
+      setParams({
+        number: [99],
+      });
+      setParams({
+        word: ['bar'],
+      });
+      queryHook.rerender();
+    });
+
+    expect(window.location.search).toEqual('?word=bar&number=99');
+  });
 });
