@@ -24,7 +24,7 @@ export function useQueryParams<T extends QueryCodec>(
       // Params owned by us
       const ours = query.parse(search);
 
-      // Params being injected
+      // Params being constructed
       const next = query.encode({ ...ours, ...source });
 
       const url = new URL(location.href);
