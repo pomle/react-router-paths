@@ -158,7 +158,7 @@ You can also consider reading the [test suite](https://github.com/pomle/react-ro
 
 #### Single param hook `?query=u2`
 
-The `useQueryParams` hook returns the low level API for operating on query string. Real use cases are more likely to implement something similar to `useState` in query string. The following example shows how to create typical implementation that stores the query for a search field.
+The `useQueryParams` hook returns the low level API for operating on query string. The following example shows how to create typical implementation that stores the query for a search field.
 
 ```tsx
 import { codecs, createQuery } from '@pomle/paths';
