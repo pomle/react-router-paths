@@ -10,7 +10,7 @@ yarn add @pomle/paths@1.4 @pomle/react-router-paths
 
 # Usage
 
-This package is similar to React Router, albeit stricter. A decision has been made that path params are considered always required for a path. If you require optional parameters, these must be implemented with query params (see [`useQueryParams` hook](#usequeryparams)).
+This package is similar to React Router, albeit stricter. A decision has been made that path params are considered always required for a path. If you require optional parameters, use two different paths, or implement using query params (see [`useQueryParams` hook](#usequeryparams)).
 
 ## RouterContext
 
