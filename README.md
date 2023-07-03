@@ -14,7 +14,19 @@ This package is similar to React Router, albeit stricter. A decision has been ma
 
 ## RouterContext
 
+The React Context that provides routing information to the render tree. Needs a reference to `window.history`. Allows you to mock History for testing purposes.
 
+```tsx
+import { RouterContext } from '@pomle/react-router-paths';
+
+export function App() {
+  return (
+    <RouterContext history={window.history}>
+      <RestOfYourApp/>
+    </RouterContext>
+  );
+}
+```
 
 ## PathRoute
 
