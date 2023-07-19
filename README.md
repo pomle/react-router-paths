@@ -5,7 +5,7 @@
 This library depends on `react @ >=16.8` (hooks support), `@pomle/paths @ ^1.3`.
 
 ```bash
-yarn add @pomle/paths@1.4 @pomle/react-router-paths
+yarn add @pomle/paths @pomle/react-router-paths
 ```
 
 # Usage
