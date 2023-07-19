@@ -76,9 +76,9 @@ export function RouterContext({
         source.replaceState(null, '', url.toString());
         window.dispatchEvent(new Event('popstate'));
       },
-      go: source.go,
-      back: source.back,
-      forward: source.forward,
+      go: source.go.bind(source),
+      back: source.back.bind(source),
+      forward: source.forward.bind(source),
     };
   }, [source, updateLocation]);
 
