@@ -27,7 +27,7 @@ export function useQueryParams<T extends QueryCodec>(
       // Params being constructed
       const next = query.encode({ ...ours, ...source });
 
-      const url = new URL(location.href);
+      const url = new URL(window.location.href);
       url.search = buildQuery({ ...raw, ...next });
       history.replace(url);
     },
