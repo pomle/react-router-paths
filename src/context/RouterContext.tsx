@@ -80,7 +80,7 @@ export function RouterContext({
       back: source.back.bind(source),
       forward: source.forward.bind(source),
     };
-  }, [source, updateLocation]);
+  }, [source]);
 
   const value = {
     location,
