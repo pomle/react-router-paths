@@ -92,11 +92,11 @@ export function RouterContext({
 }
 
 export function useRouter() {
-  const config = useContext(Context);
-  if (!config) {
+  const context = useContext(Context);
+  if (!context) {
     throw new Error('useRouter without RouterContext');
   }
-  return config;
+  return context;
 }
 
 export function useHistory() {
