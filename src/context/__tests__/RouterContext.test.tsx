@@ -4,9 +4,26 @@ import { createPath } from '@pomle/paths';
 import { useNav } from '../../hooks/useNav';
 import { create, act } from 'react-test-renderer';
 import { useHistory, useLocation } from '../RouterContext';
+import { renderHook } from '@testing-library/react-hooks';
 
 describe('RouterContext', () => {
   const path = createPath('/my/path', {});
+
+  it('provides a reference stable history object', () => {
+    const { Component } = createContext();
+
+    const hook = renderHook(() => useHistory(), {
+      wrapper: Component,
+    });
+
+    const ref = hook.result.current;
+
+    act(() => {
+      hook.rerender();
+    });
+
+    expect(ref).toBe(hook.result.current);
+  });
 
   it('updates location when doing immediate go on mount', () => {
     const { Component, history } = createContext();
