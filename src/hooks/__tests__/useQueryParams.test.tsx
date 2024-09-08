@@ -5,12 +5,12 @@ import { useQueryParams } from '../useQueryParams';
 import { act } from 'react-test-renderer';
 
 describe('useQueryParams', () => {
-  const query = createQuery({
-    word: codecs.string,
-    number: codecs.number,
-  });
-
   it('gives back existing but empty params by default ', () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component } = createContext();
 
     const { result } = renderHook(() => useQueryParams(query), {
@@ -22,6 +22,11 @@ describe('useQueryParams', () => {
   });
 
   it('provides values from params', () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component } = createContext(['/path?word=foo&number=2&number=3']);
 
     const { result } = renderHook(() => useQueryParams(query), {
@@ -33,6 +38,11 @@ describe('useQueryParams', () => {
   });
 
   it('updates params when set called', async () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component } = createContext(['/path?word=foo&number=2&number=3']);
 
     const hook = renderHook(() => useQueryParams(query), {
@@ -55,6 +65,11 @@ describe('useQueryParams', () => {
   });
 
   it('updates using replace when set called', async () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component, history } = createContext([
       '/path?word=foo&number=2&number=3',
     ]);
@@ -79,6 +94,11 @@ describe('useQueryParams', () => {
   });
 
   it('does not contain unknown values', async () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component } = createContext(['/path?random=unknown&word=known']);
 
     const hook = renderHook(() => useQueryParams(query), {
@@ -90,6 +110,11 @@ describe('useQueryParams', () => {
   });
 
   it('merges values with unknown', async () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component, window } = createContext([
       '/path?random=unknown&word=foo',
     ]);
@@ -111,6 +136,11 @@ describe('useQueryParams', () => {
   });
 
   it('allows removing values', async () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component, window } = createContext([
       '/path?random=unknown&word=foo&number=21',
     ]);
@@ -132,6 +162,11 @@ describe('useQueryParams', () => {
   });
 
   it('supports synchronous immediate updates', async () => {
+    const query = createQuery({
+      word: codecs.string,
+      number: codecs.number,
+    });
+
     const { Component, window } = createContext(['/path?word=foo&number=21']);
 
     const queryHook = renderHook(() => useQueryParams(query), {
