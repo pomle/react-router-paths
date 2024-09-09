@@ -6,10 +6,12 @@ export function createParser<T extends QueryCodec>(query: Query<T>) {
   const memo = new Map<string, ParamCache[]>();
 
   function getCache(key: string) {
-    if (!memo.has(key)) {
-      memo.set(key, []);
+    let result = memo.get(key);
+    if (!result) {
+      result = [];
+      memo.set(key, result);
     }
-    return memo.get(key) as ParamCache[];
+    return result;
   }
 
   return function stableParse(search: string) {
