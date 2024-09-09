@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { createContext } from '../../mocks/context';
-import { codecs, createQuery } from '@pomle/paths';
+import { codecs, createCodec, createQuery } from '@pomle/paths';
 import { useQueryParams } from '../useQueryParams';
 import { act } from 'react-test-renderer';
 
@@ -35,6 +35,49 @@ describe('useQueryParams', () => {
 
     const [params] = result.current;
     expect(params).toEqual({ number: [2, 3], word: ['foo'] });
+  });
+
+  it('provides values with stable refs on updates', () => {
+    const dateCodec = createCodec(
+      (date: Date) => date.getTime().toString(),
+      (param: string) => new Date(parseFloat(param)),
+    );
+
+    const query = createQuery({
+      date: dateCodec,
+    });
+
+    const { Component, history } = createContext(['/path?date=10000000']);
+
+    const hook = renderHook(() => useQueryParams(query), {
+      wrapper: Component,
+    });
+
+    const [firstParams] = hook.result.current;
+    const firstEntry = firstParams.date[0];
+    expect(firstEntry).toEqual(new Date(10000000));
+
+    act(() => {
+      history.pushState({}, '', '/path?date=10000000&date=20000000');
+
+      hook.rerender();
+    });
+
+    const [secondParams] = hook.result.current;
+    const secondEntry = secondParams.date[0];
+    expect(secondEntry).toEqual(new Date(10000000));
+    expect(firstEntry).toBe(secondEntry);
+
+    act(() => {
+      history.pushState({}, '', '/path?date=30000000&date=20000000');
+
+      hook.rerender();
+    });
+
+    const [thirdParams] = hook.result.current;
+    const thirdEntry = thirdParams.date[0];
+    expect(thirdEntry).toEqual(new Date(30000000));
+    expect(firstEntry).not.toBe(thirdEntry);
   });
 
   it('updates params when set called', async () => {
