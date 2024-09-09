@@ -17,9 +17,10 @@ export function createParser<T extends QueryCodec>(query: Query<T>) {
   return function stableParse(search: string) {
     const parsed = parseQuery(search);
     const decoded = query.parse(search);
-    for (const [key, output] of Object.entries(decoded)) {
+    for (const key of Object.keys(decoded)) {
       const cache = getCache(key);
       const sources = parsed[key];
+      const output = decoded[key] as unknown[];
       if (sources) {
         output.forEach((value: unknown, index: number) => {
           const source = sources[index];
