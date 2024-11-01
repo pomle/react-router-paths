@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { createContext } from '../../mocks/context';
-import { codecs, createQuery } from '@pomle/paths';
+import { codecs, createCodec, createQuery } from '@pomle/paths';
 import { useQueryState } from '../useQueryState';
 import { act } from 'react-test-renderer';
 
@@ -34,6 +34,34 @@ describe('useQueryState', () => {
 
     const [state] = hook.result.current;
     expect(state).toEqual({ number: [2, 3], word: ['foo'] });
+  });
+
+  it('provides values with stable refs on updates', () => {
+    const dateCodec = createCodec(
+      (date: Date) => date.getTime().toString(),
+      (param: string) => new Date(parseFloat(param)),
+    );
+
+    const query = createQuery({
+      date: dateCodec,
+    });
+    const { Component } = createContext(['/path?date=100000000']);
+
+    const hook = renderHook(() => useQueryState(query), {
+      wrapper: Component,
+    });
+
+    const [firstState, setState] = hook.result.current;
+
+    act(() => {
+      setState({
+        date: [firstState.date[0], new Date(200000000)],
+      });
+      hook.rerender();
+    });
+
+    const [secondState] = hook.result.current;
+    expect(firstState.date[0]).toBe(secondState.date[0]);
   });
 
   it('provides values from params on initial render only', () => {
