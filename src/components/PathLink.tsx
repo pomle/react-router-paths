@@ -7,7 +7,13 @@ interface PathLinkProps {
   className?: string;
 }
 
-export function PathLink({ to, children, className }: PathLinkProps) {
+// We use ...restProps to pass "data-" and "aria-" attributes
+export function PathLink({
+  to,
+  children,
+  className,
+  ...restProps
+}: PathLinkProps) {
   const { history } = useRouter();
 
   const handleClick = useCallback(
@@ -19,7 +25,7 @@ export function PathLink({ to, children, className }: PathLinkProps) {
   );
 
   return (
-    <a href={to} className={className} onClick={handleClick}>
+    <a href={to} className={className} onClick={handleClick} {...restProps}>
       {children}
     </a>
   );
