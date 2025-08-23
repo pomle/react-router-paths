@@ -47,13 +47,14 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^27.1.0",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "microbundle": "^0.14.2",
     "prettier": "^2.0.4",
     "react": "^17.0.2",
     "react-test-renderer": "^17.0.2",
-    "ts-jest": "^27.0.5",
-    "typescript": "^4.1.0"
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2"
   },
   "files": [
     "dist"
