@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { createContext } from '../../mocks/context';
 import { createPath } from '@pomle/paths';
 import { useNav } from '../../hooks/useNav';
-import { create, act } from 'react-test-renderer';
+import { fireEvent, render } from '@testing-library/react';
 import { useHistory, useLocation } from '../RouterContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 
 describe('RouterContext', () => {
   const path = createPath('/my/path', {});
@@ -40,19 +40,15 @@ describe('RouterContext', () => {
       return <>{location.pathname}</>;
     }
 
-    let tree: any;
-
-    act(() => {
-      tree = create(
-        <Component>
-          <Redirect />
-        </Component>,
-      );
-    });
+    const { container } = render(
+      <Component>
+        <Redirect />
+      </Component>,
+    );
 
     expect(history.length).toBe(2);
     expect(history.entries[1].pathname).toBe('/my/path');
-    expect(tree.toJSON()).toEqual('/my/path');
+    expect(container.textContent).toEqual('/my/path');
   });
 
   it('supports go, back, and next calls', async () => {
@@ -87,36 +83,28 @@ describe('RouterContext', () => {
       );
     }
 
-    const tree = create(
+    const { container } = render(
       <Component>
         <Content />
       </Component>,
     );
 
+    const forw = container.querySelector('[data-what=forw]')!;
+    const back = container.querySelector('[data-what=back]')!;
+    const jump = container.querySelector('[data-what=jump]')!;
+
+    const urlText = container.querySelector('[data-what=loc]');
+
     expect(history.length).toBe(6);
+    expect(urlText?.textContent).toEqual('/a/1');
 
-    act(() => {
-      tree.root.findByProps({ 'data-what': 'forw' }).props.onClick();
-    });
+    fireEvent.click(forw);
+    expect(urlText?.textContent).toEqual('/b/2');
 
-    expect(tree.root.findByProps({ 'data-what': 'loc' }).children).toEqual([
-      '/b/2',
-    ]);
+    fireEvent.click(back);
+    expect(urlText?.textContent).toEqual('/a/1');
 
-    act(() => {
-      tree.root.findByProps({ 'data-what': 'back' }).props.onClick();
-    });
-
-    expect(tree.root.findByProps({ 'data-what': 'loc' }).children).toEqual([
-      '/a/1',
-    ]);
-
-    act(() => {
-      tree.root.findByProps({ 'data-what': 'jump' }).props.onClick();
-    });
-
-    expect(tree.root.findByProps({ 'data-what': 'loc' }).children).toEqual([
-      '/d/4',
-    ]);
+    fireEvent.click(jump);
+    expect(urlText?.textContent).toEqual('/d/4');
   });
 });
