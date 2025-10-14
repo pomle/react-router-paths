@@ -1,4 +1,5 @@
-import { act } from 'react';
+// @vitest-environment jsdom
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
 import { codecs, createCodec, createQuery } from '@pomle/paths';
@@ -11,7 +12,7 @@ describe('useQueryState', () => {
   });
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   it('gives back existing but empty state by default ', () => {
@@ -53,12 +54,10 @@ describe('useQueryState', () => {
 
     const [firstState, setState] = hook.result.current;
 
-    act(() => {
-      setState({
-        date: [firstState.date[0], new Date(200000000)],
-      });
-      hook.rerender();
+    setState({
+      date: [firstState.date[0], new Date(200000000)],
     });
+    hook.rerender();
 
     const [secondState] = hook.result.current;
     expect(firstState.date[0]).toBe(secondState.date[0]);
@@ -73,11 +72,9 @@ describe('useQueryState', () => {
       wrapper: Component,
     });
 
-    act(() => {
-      history.pushState({}, '', '/path?word=foo&number=3');
+    history.pushState({}, '', '/path?word=foo&number=3');
 
-      hook.rerender();
-    });
+    hook.rerender();
 
     const [state] = hook.result.current;
     expect(state).toEqual({ number: [2, 3], word: ['foo'] });
@@ -92,13 +89,11 @@ describe('useQueryState', () => {
 
     const [, setState] = hook.result.current;
 
-    act(() => {
-      setState({
-        word: ['bar'],
-        number: [2],
-      });
-      hook.rerender();
+    setState({
+      word: ['bar'],
+      number: [2],
     });
+    hook.rerender();
 
     const [state] = hook.result.current;
     expect(state).toEqual({ number: [2], word: ['bar'] });
@@ -115,13 +110,11 @@ describe('useQueryState', () => {
 
     const [, setState] = hook.result.current;
 
-    act(() => {
-      setState({
-        word: ['bar'],
-        number: [2],
-      });
-      hook.rerender();
+    setState({
+      word: ['bar'],
+      number: [2],
     });
+    hook.rerender();
 
     expect(window.location.search).toEqual('?word=foo&number=2&number=3');
   });
@@ -139,16 +132,14 @@ describe('useQueryState', () => {
 
     const [, setState] = queryHook.result.current;
 
-    act(() => {
-      setState({
-        word: ['bar'],
-        number: [2],
-      });
-
-      jest.advanceTimersByTime(250);
-
-      queryHook.rerender();
+    setState({
+      word: ['bar'],
+      number: [2],
     });
+
+    vi.advanceTimersByTime(250);
+
+    queryHook.rerender();
 
     expect(history.length).toBe(1);
     expect(window.location.search).toEqual('?word=bar&number=2');
@@ -176,15 +167,13 @@ describe('useQueryState', () => {
 
     const [, setState] = queryHook.result.current;
 
-    act(() => {
-      setState({
-        word: ['bar'],
-      });
-
-      jest.advanceTimersByTime(250);
-
-      queryHook.rerender();
+    setState({
+      word: ['bar'],
     });
+
+    vi.advanceTimersByTime(250);
+
+    queryHook.rerender();
 
     expect(window.location.search).toEqual('?random=unknown&word=bar');
   });
@@ -200,15 +189,13 @@ describe('useQueryState', () => {
 
     const [, setState] = queryHook.result.current;
 
-    act(() => {
-      setState({
-        number: [],
-      });
-
-      jest.advanceTimersByTime(250);
-
-      queryHook.rerender();
+    setState({
+      number: [],
     });
+
+    vi.advanceTimersByTime(250);
+
+    queryHook.rerender();
 
     expect(window.location.search).toEqual('?random=unknown&word=foo');
   });

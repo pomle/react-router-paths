@@ -1,3 +1,4 @@
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { createCodec, createQuery } from '@pomle/paths';
 import { createParser } from '../query';
 
@@ -6,7 +7,7 @@ const dateCodec = createCodec(
   (param: string) => new Date(parseFloat(param)),
 );
 
-describe.only('Stable Query Parser', () => {
+describe('Stable Query Parser', () => {
   const query = createQuery({
     date: dateCodec,
   });

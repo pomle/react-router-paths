@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+import { describe, expect, it, vi } from 'vitest';
 import React from 'react';
 import { codecs, createPath } from '@pomle/paths';
 import { render } from '@testing-library/react';
@@ -24,7 +26,7 @@ describe('PathRoute', () => {
 
   it('calls children with null when path is not matching', () => {
     const { Component } = createContext();
-    const spy = jest.fn(mounter);
+    const spy = vi.fn(mounter);
 
     render(
       <Component>
@@ -37,7 +39,7 @@ describe('PathRoute', () => {
 
   it('calls children with params when path is matching', () => {
     const { Component } = createContext(['/my/path/foo/13']);
-    const spy = jest.fn(mounter);
+    const spy = vi.fn(mounter);
 
     render(
       <Component>
@@ -53,7 +55,7 @@ describe('PathRoute', () => {
 
   it('calls children with params when path is matching partially', () => {
     const { Component } = createContext(['/my/path/bar/16/and/parts']);
-    const spy = jest.fn(mounter);
+    const spy = vi.fn(mounter);
 
     render(
       <Component>
@@ -70,7 +72,7 @@ describe('PathRoute', () => {
   describe('#mount', () => {
     it('mounts a component and renders on exact match', () => {
       const { Component } = createContext(['/my/path/bar/16']);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       function RouteRender(props: { count: number; with: string }) {
         spy(props);
@@ -91,7 +93,7 @@ describe('PathRoute', () => {
 
     it('does not mount a component with overmatch', () => {
       const { Component } = createContext(['/my/path/bar/16/with/over/match']);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       function RouteRender(props: { count: number; with: string }) {
         spy(props);
@@ -109,7 +111,7 @@ describe('PathRoute', () => {
 
     it('does not mount a component with undermatch', () => {
       const { Component } = createContext(['/my/path']);
-      const spy = jest.fn();
+      const spy = vi.fn();
 
       function RouteRender(props: { count: number; with: string }) {
         spy(props);

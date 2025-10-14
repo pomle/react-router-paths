@@ -1,4 +1,5 @@
-import { act } from 'react';
+// @vitest-environment jsdom
+import { describe, expect, it } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
 import { codecs, createPath, createQuery } from '@pomle/paths';
@@ -26,10 +27,8 @@ describe('useNav', () => {
 
     const nav = hook.result.current;
 
-    act(() => {
-      nav.go({ word: 'foo', number: 3 });
-      hook.rerender();
-    });
+    nav.go({ word: 'foo', number: 3 });
+    hook.rerender();
 
     expect(history.length).toBe(2);
     expect(history.entries[1].pathname).toEqual('/my/path/foo/3');
@@ -46,10 +45,8 @@ describe('useNav', () => {
 
     const nav = hook.result.current;
 
-    act(() => {
-      nav.go({ word: 'foo', number: 3 }, { word: ['a'], number: [1, 2, 3] });
-      hook.rerender();
-    });
+    nav.go({ word: 'foo', number: 3 }, { word: ['a'], number: [1, 2, 3] });
+    hook.rerender();
 
     expect(history.length).toBe(2);
     expect(history.entries[1].search).toEqual(
@@ -68,10 +65,8 @@ describe('useNav', () => {
 
     const nav = hook.result.current;
 
-    act(() => {
-      nav.set({ word: 'foo', number: 3 });
-      hook.rerender();
-    });
+    nav.set({ word: 'foo', number: 3 });
+    hook.rerender();
 
     expect(history.length).toBe(1);
     expect(history.entries[0].pathname).toEqual('/my/path/foo/3');
@@ -88,10 +83,8 @@ describe('useNav', () => {
 
     const nav = hook.result.current;
 
-    act(() => {
-      nav.set({ word: 'foo', number: 3 }, { word: ['a', 'b'] });
-      hook.rerender();
-    });
+    nav.set({ word: 'foo', number: 3 }, { word: ['a', 'b'] });
+    hook.rerender();
 
     expect(history.length).toBe(1);
     expect(history.entries[0].search).toEqual('?word=a&word=b');
@@ -108,14 +101,12 @@ describe('useNav', () => {
 
     const nav = hook.result.current;
 
-    act(() => {
-      const handleSomething = nav.on({ word: 'foo', number: 3 });
-      expect(history.length).toBe(1);
+    const handleSomething = nav.on({ word: 'foo', number: 3 });
+    expect(history.length).toBe(1);
 
-      handleSomething();
-      expect(history.length).toBe(2);
-      hook.rerender();
-    });
+    handleSomething();
+    expect(history.length).toBe(2);
+    hook.rerender();
 
     expect(history.length).toBe(2);
     expect(history.entries[1].pathname).toEqual('/my/path/foo/3');

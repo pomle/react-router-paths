@@ -1,4 +1,6 @@
-import React, { useEffect, act } from 'react';
+// @vitest-environment jsdom
+import { describe, expect, it } from 'vitest';
+import React, { useEffect } from 'react';
 import { createContext } from '../../mocks/context';
 import { createPath } from '@pomle/paths';
 import { useNav } from '../../hooks/useNav';
@@ -17,9 +19,7 @@ describe('RouterContext', () => {
 
     const ref = hook.result.current;
 
-    act(() => {
-      hook.rerender();
-    });
+    hook.rerender();
 
     expect(ref).toBe(hook.result.current);
   });
