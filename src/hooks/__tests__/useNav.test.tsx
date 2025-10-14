@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act } from 'react';
+import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
 import { codecs, createPath, createQuery } from '@pomle/paths';
 import { useNav } from '../useNav';
-import { act } from 'react-test-renderer';
 
 describe('useNav', () => {
   const path = createPath('/my/path/:word/:number', {

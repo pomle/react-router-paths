@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act } from 'react';
+import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
 import { codecs, createCodec, createQuery } from '@pomle/paths';
 import { useQueryParams } from '../useQueryParams';
