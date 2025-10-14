@@ -13,7 +13,7 @@ describe('PathRoute', () => {
   });
 
   type Match = {
-    params: ReturnType<typeof path['parse']>;
+    params: ReturnType<(typeof path)['parse']>;
   };
 
   function mounter(match: Match | null) {
