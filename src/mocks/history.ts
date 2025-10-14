@@ -30,7 +30,7 @@ class EventEmitter {
 }
 
 class Window extends EventEmitter {
-  location: Location = (new URL('http://mock/') as unknown) as Location;
+  location: Location = new URL('http://mock/') as unknown as Location;
 }
 
 export function createHistoryMock(entries: string[]) {
@@ -58,7 +58,7 @@ export function createHistoryMock(entries: string[]) {
     go(delta: number) {
       this.index += delta;
       const url = this.entries[this.index];
-      window.location = (url as unknown) as Location;
+      window.location = url as unknown as Location;
       window.dispatchEvent(new Event('popstate'));
     }
 
