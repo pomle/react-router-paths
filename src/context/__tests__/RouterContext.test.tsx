@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, act } from 'react';
 import { createContext } from '../../mocks/context';
 import { createPath } from '@pomle/paths';
 import { useNav } from '../../hooks/useNav';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, renderHook } from '@testing-library/react';
 import { useHistory, useLocation } from '../RouterContext';
-import { renderHook, act } from '@testing-library/react-hooks';
 
 describe('RouterContext', () => {
   const path = createPath('/my/path', {});
