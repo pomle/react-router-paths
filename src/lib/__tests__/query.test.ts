@@ -6,7 +6,7 @@ const dateCodec = createCodec(
   (param: string) => new Date(parseFloat(param)),
 );
 
-describe.only('Stable Query Parser', () => {
+describe('Stable Query Parser', () => {
   const query = createQuery({
     date: dateCodec,
   });
