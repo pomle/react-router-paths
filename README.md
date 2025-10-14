@@ -22,7 +22,7 @@ import { RouterContext } from '@pomle/react-router-paths';
 export function App() {
   return (
     <RouterContext history={window.history}>
-      <RestOfYourApp/>
+      <RestOfYourApp />
     </RouterContext>
   );
 }
