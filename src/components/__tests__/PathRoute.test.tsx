@@ -1,6 +1,6 @@
 import React from 'react';
 import { codecs, createPath } from '@pomle/paths';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
 import { PathRoute, mount } from '../PathRoute';
 
@@ -26,7 +26,7 @@ describe('PathRoute', () => {
     const { Component } = createContext();
     const spy = jest.fn(mounter);
 
-    renderer.create(
+    render(
       <Component>
         <PathRoute path={path}>{spy}</PathRoute>
       </Component>,
@@ -39,7 +39,7 @@ describe('PathRoute', () => {
     const { Component } = createContext(['/my/path/foo/13']);
     const spy = jest.fn(mounter);
 
-    renderer.create(
+    render(
       <Component>
         <PathRoute path={path}>{spy}</PathRoute>
       </Component>,
@@ -55,7 +55,7 @@ describe('PathRoute', () => {
     const { Component } = createContext(['/my/path/bar/16/and/parts']);
     const spy = jest.fn(mounter);
 
-    renderer.create(
+    render(
       <Component>
         <PathRoute path={path}>{spy}</PathRoute>
       </Component>,
@@ -77,7 +77,7 @@ describe('PathRoute', () => {
         return <div />;
       }
 
-      renderer.create(
+      render(
         <Component>
           <PathRoute path={path}>{mount(RouteRender)}</PathRoute>
         </Component>,
@@ -98,7 +98,7 @@ describe('PathRoute', () => {
         return <div />;
       }
 
-      renderer.create(
+      render(
         <Component>
           <PathRoute path={path}>{mount(RouteRender)}</PathRoute>
         </Component>,
@@ -116,7 +116,7 @@ describe('PathRoute', () => {
         return <div />;
       }
 
-      renderer.create(
+      render(
         <Component>
           <PathRoute path={path}>{mount(RouteRender)}</PathRoute>
         </Component>,
