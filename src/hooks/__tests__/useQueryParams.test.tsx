@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
-import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
 import { codecs, createCodec, createQuery } from '@pomle/paths';
@@ -59,22 +58,18 @@ describe('useQueryParams', () => {
     const firstEntry = firstParams.date[0];
     expect(firstEntry).toEqual(new Date(10000000));
 
-    act(() => {
-      history.pushState({}, '', '/path?date=10000000&date=20000000');
+    history.pushState({}, '', '/path?date=10000000&date=20000000');
 
-      hook.rerender();
-    });
+    hook.rerender();
 
     const [secondParams] = hook.result.current;
     const secondEntry = secondParams.date[0];
     expect(secondEntry).toEqual(new Date(10000000));
     expect(firstEntry).toBe(secondEntry);
 
-    act(() => {
-      history.pushState({}, '', '/path?date=30000000&date=20000000');
+    history.pushState({}, '', '/path?date=30000000&date=20000000');
 
-      hook.rerender();
-    });
+    hook.rerender();
 
     const [thirdParams] = hook.result.current;
     const thirdEntry = thirdParams.date[0];
@@ -96,13 +91,11 @@ describe('useQueryParams', () => {
 
     const [, setParams] = hook.result.current;
 
-    act(() => {
-      setParams({
-        word: ['bar'],
-        number: [2],
-      });
-      hook.rerender();
+    setParams({
+      word: ['bar'],
+      number: [2],
     });
+    hook.rerender();
 
     const [params] = hook.result.current;
 
@@ -127,13 +120,11 @@ describe('useQueryParams', () => {
 
     const [, setParams] = queryHook.result.current;
 
-    act(() => {
-      setParams({
-        word: ['bar'],
-        number: [2],
-      });
-      queryHook.rerender();
+    setParams({
+      word: ['bar'],
+      number: [2],
     });
+    queryHook.rerender();
 
     expect(history.length).toBe(1);
   });
@@ -170,12 +161,10 @@ describe('useQueryParams', () => {
 
     const [, setParams] = queryHook.result.current;
 
-    act(() => {
-      setParams({
-        word: ['bar'],
-      });
-      queryHook.rerender();
+    setParams({
+      word: ['bar'],
     });
+    queryHook.rerender();
 
     expect(window.location.search).toEqual('?random=unknown&word=bar');
   });
@@ -196,12 +185,10 @@ describe('useQueryParams', () => {
 
     const [, setParams] = queryHook.result.current;
 
-    act(() => {
-      setParams({
-        number: [],
-      });
-      queryHook.rerender();
+    setParams({
+      number: [],
     });
+    queryHook.rerender();
 
     expect(window.location.search).toEqual('?random=unknown&word=foo');
   });
@@ -220,15 +207,13 @@ describe('useQueryParams', () => {
 
     const [, setParams] = queryHook.result.current;
 
-    act(() => {
-      setParams({
-        number: [99],
-      });
-      setParams({
-        word: ['bar'],
-      });
-      queryHook.rerender();
+    setParams({
+      number: [99],
     });
+    setParams({
+      word: ['bar'],
+    });
+    queryHook.rerender();
 
     expect(window.location.search).toEqual('?word=bar&number=99');
   });

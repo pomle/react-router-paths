@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
-import React, { useEffect, act } from 'react';
+import React, { useEffect } from 'react';
 import { createContext } from '../../mocks/context';
 import { createPath } from '@pomle/paths';
 import { useNav } from '../../hooks/useNav';
