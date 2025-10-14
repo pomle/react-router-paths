@@ -1,3 +1,4 @@
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { createCodec, createQuery } from '@pomle/paths';
 import { createParser } from '../query';
 

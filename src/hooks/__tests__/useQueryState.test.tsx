@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
@@ -11,7 +13,7 @@ describe('useQueryState', () => {
   });
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   it('gives back existing but empty state by default ', () => {
@@ -145,7 +147,7 @@ describe('useQueryState', () => {
         number: [2],
       });
 
-      jest.advanceTimersByTime(250);
+      vi.advanceTimersByTime(250);
 
       queryHook.rerender();
     });
@@ -181,7 +183,7 @@ describe('useQueryState', () => {
         word: ['bar'],
       });
 
-      jest.advanceTimersByTime(250);
+      vi.advanceTimersByTime(250);
 
       queryHook.rerender();
     });
@@ -205,7 +207,7 @@ describe('useQueryState', () => {
         number: [],
       });
 
-      jest.advanceTimersByTime(250);
+      vi.advanceTimersByTime(250);
 
       queryHook.rerender();
     });

@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+import { describe, expect, it } from 'vitest';
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import { createContext } from '../../mocks/context';
