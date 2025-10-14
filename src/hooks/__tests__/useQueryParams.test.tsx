@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { createContext } from '../../mocks/context';
 import { codecs, createCodec, createQuery } from '@pomle/paths';
 import { useQueryParams } from '../useQueryParams';
-import { act } from 'react-test-renderer';
 
 describe('useQueryParams', () => {
   it('gives back existing but empty params by default ', () => {
