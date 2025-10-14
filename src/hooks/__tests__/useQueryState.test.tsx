@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { createContext } from '../../mocks/context';
 import { codecs, createCodec, createQuery } from '@pomle/paths';
 import { useQueryState } from '../useQueryState';
-import { act } from 'react-test-renderer';
 
 describe('useQueryState', () => {
   const query = createQuery({
