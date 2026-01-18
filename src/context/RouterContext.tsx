@@ -89,14 +89,12 @@ export function RouterContext({
   );
 }
 
-export function useRouter() {
+export function useWindow() {
   const window = useContext(WindowContext);
-  const location = useContext(LocationContext);
-  const history = useContext(HistoryContext);
-  if (!location || !history || !window) {
-    throw new Error('useRouter without RouterContext');
+  if (!window) {
+    throw new Error('useWindow without RouterContext');
   }
-  return { location, history, window };
+  return window;
 }
 
 export function useHistory() {
@@ -113,4 +111,12 @@ export function useLocation() {
     throw new Error('useLocation without RouterContext');
   }
   return location;
+}
+
+export function useRouter() {
+  return {
+    location: useLocation(),
+    history: useHistory(),
+    window: useWindow(),
+  };
 }
