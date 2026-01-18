@@ -27,13 +27,9 @@ type History = {
   replace(url: URLCompatible): void;
 };
 
-type Router = {
-  location: URL;
-  history: History;
-  window: BrowserWindow;
-};
-
-const Context = createContext<Router | null>(null);
+const WindowContext = createContext<BrowserWindow | null>(null);
+const LocationContext = createContext<URL | null>(null);
+const HistoryContext = createContext<History | null>(null);
 
 interface RouterContextProps {
   history: BrowserHistory;
@@ -54,7 +50,7 @@ export function RouterContext({
 
   const updateLocation = useCallback(() => {
     setLocation(createLocation);
-  }, []);
+  }, [createLocation]);
 
   useEffect(() => {
     updateLocation();
@@ -64,7 +60,7 @@ export function RouterContext({
     return () => {
       window.removeEventListener('popstate', updateLocation);
     };
-  }, [updateLocation]);
+  }, [updateLocation, window]);
 
   const history = useMemo(() => {
     return {
@@ -80,29 +76,41 @@ export function RouterContext({
       back: source.back.bind(source),
       forward: source.forward.bind(source),
     };
-  }, [source]);
+  }, [source, window]);
 
-  const value = {
-    location,
-    history,
-    window,
-  };
-
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return (
+    <WindowContext.Provider value={window}>
+      <HistoryContext.Provider value={history}>
+        <LocationContext.Provider value={location}>
+          {children}
+        </LocationContext.Provider>
+      </HistoryContext.Provider>
+    </WindowContext.Provider>
+  );
 }
 
 export function useRouter() {
-  const context = useContext(Context);
-  if (!context) {
+  const window = useContext(WindowContext);
+  const location = useContext(LocationContext);
+  const history = useContext(HistoryContext);
+  if (!location || !history || !window) {
     throw new Error('useRouter without RouterContext');
   }
-  return context;
+  return { location, history, window };
 }
 
 export function useHistory() {
-  return useRouter().history;
+  const history = useContext(HistoryContext);
+  if (!history) {
+    throw new Error('useHistory without RouterContext');
+  }
+  return history;
 }
 
 export function useLocation() {
-  return useRouter().location;
+  const location = useContext(LocationContext);
+  if (!location) {
+    throw new Error('useLocation without RouterContext');
+  }
+  return location;
 }

@@ -36,7 +36,7 @@ export function useQueryParams<T extends QueryCodec>(
       url.search = buildQuery({ ...raw, ...next });
       history.replace(url);
     },
-    [history, query],
+    [window, history, query],
   );
 
   return [params, setParams];
