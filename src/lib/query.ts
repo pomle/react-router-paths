@@ -23,6 +23,11 @@ export function createParser<T extends QueryCodec>(query: Query<T>) {
       const cache = getCache(key);
       const sources = parsed[key];
       const output = decoded[key] as unknown[];
+
+      if (cache.length != output.length) {
+        previous = undefined;
+      }
+
       if (sources) {
         output.forEach((value: unknown, index: number) => {
           const source = sources[index];
@@ -37,6 +42,7 @@ export function createParser<T extends QueryCodec>(query: Query<T>) {
           }
         });
       }
+
       cache.splice(output.length);
     }
 

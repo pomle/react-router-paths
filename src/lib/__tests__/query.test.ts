@@ -93,4 +93,11 @@ describe('Stable Query Parser', () => {
     const secondParse = parse('date=10000000&foo=smurf');
     expect(firstParse).not.toBe(secondParse);
   });
+
+  it('returns new reference to decoded params object when relevant args changed', () => {
+    const parse = createParser(query);
+    const firstParse = parse('date=100000000&foo=bar');
+    const secondParse = parse('foo=smurf');
+    expect(firstParse).not.toBe(secondParse);
+  });
 });
