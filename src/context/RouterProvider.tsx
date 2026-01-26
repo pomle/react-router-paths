@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 
 type BrowserHistory = Pick<
   globalThis.History,
@@ -28,7 +21,6 @@ type History = {
 };
 
 const WindowContext = createContext<BrowserWindow | null>(null);
-const LocationContext = createContext<URL | null>(null);
 const HistoryContext = createContext<History | null>(null);
 
 interface RouterProviderProps {
@@ -42,26 +34,6 @@ export function RouterProvider({
   history: source,
   window = globalThis.window,
 }: RouterProviderProps) {
-  const createLocation = useCallback(() => {
-    return new URL(window.location.href);
-  }, [window]);
-
-  const [location, setLocation] = useState<URL>(createLocation);
-
-  const updateLocation = useCallback(() => {
-    setLocation(createLocation);
-  }, [createLocation]);
-
-  useEffect(() => {
-    updateLocation();
-
-    window.addEventListener('popstate', updateLocation);
-
-    return () => {
-      window.removeEventListener('popstate', updateLocation);
-    };
-  }, [updateLocation, window]);
-
   const history = useMemo(() => {
     return {
       push(url: URLCompatible) {
@@ -81,9 +53,7 @@ export function RouterProvider({
   return (
     <WindowContext.Provider value={window}>
       <HistoryContext.Provider value={history}>
-        <LocationContext.Provider value={location}>
-          {children}
-        </LocationContext.Provider>
+        {children}
       </HistoryContext.Provider>
     </WindowContext.Provider>
   );
@@ -105,17 +75,8 @@ export function useHistory() {
   return history;
 }
 
-export function useLocation() {
-  const location = useContext(LocationContext);
-  if (!location) {
-    throw new Error('useLocation without RouterProvider');
-  }
-  return location;
-}
-
 export function useRouter() {
   return {
-    location: useLocation(),
     history: useHistory(),
     window: useWindow(),
   };
