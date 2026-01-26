@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Path, PathCodec } from '@pomle/paths';
-import { useLocation } from '../context/RouterProvider';
+import { useWindow } from '../context/RouterProvider';
 
 type Values<Codec extends PathCodec> = ReturnType<Path<Codec>['decode']>;
 
@@ -18,26 +18,41 @@ export function PathRoute<T extends PathCodec>({
   path,
   children,
 }: PathRouteProps<T>) {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const window = useWindow();
 
-  const match = useMemo(() => {
-    const diff = path.match(pathname);
-    if (diff < 0) {
-      return null;
+  const stableParse = useCallback(
+    (pathname: string) => {
+      const params = path.parse(pathname);
+
+      if (params === null) {
+        return null;
+      }
+
+      const diff = path.match(window.location.pathname);
+      return {
+        exact: diff === 0,
+        params,
+      };
+    },
+    [path],
+  );
+
+  const [match, setMatch] = useState<Match<T> | null>(() => {
+    return stableParse(window.location.pathname);
+  });
+
+  useEffect(() => {
+    function handleParams() {
+      const match = stableParse(window.location.pathname);
+      setMatch(match);
     }
 
-    const params = path.parse(pathname);
+    window.addEventListener('popstate', handleParams);
 
-    if (params === null) {
-      return null;
-    }
-
-    return {
-      exact: diff === 0,
-      params,
+    return () => {
+      window.removeEventListener('popstate', handleParams);
     };
-  }, [path, pathname]);
+  }, [window, stableParse]);
 
   return children(match);
 }
