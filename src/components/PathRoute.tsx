@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Path, PathCodec } from '@pomle/paths';
-import { useLocation } from '../context/RouterContext';
+import { useLocation } from '../context/RouterProvider';
 
 type Values<Codec extends PathCodec> = ReturnType<Path<Codec>['decode']>;
 

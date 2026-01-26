@@ -31,17 +31,17 @@ const WindowContext = createContext<BrowserWindow | null>(null);
 const LocationContext = createContext<URL | null>(null);
 const HistoryContext = createContext<History | null>(null);
 
-interface RouterContextProps {
+interface RouterProviderProps {
   history: BrowserHistory;
   children: React.ReactNode;
   window?: BrowserWindow;
 }
 
-export function RouterContext({
+export function RouterProvider({
   children,
   history: source,
   window = globalThis.window,
-}: RouterContextProps) {
+}: RouterProviderProps) {
   const createLocation = useCallback(() => {
     return new URL(window.location.href);
   }, [window]);
@@ -92,7 +92,7 @@ export function RouterContext({
 export function useWindow() {
   const window = useContext(WindowContext);
   if (!window) {
-    throw new Error('useWindow without RouterContext');
+    throw new Error('useWindow without RouterProvider');
   }
   return window;
 }
@@ -100,7 +100,7 @@ export function useWindow() {
 export function useHistory() {
   const history = useContext(HistoryContext);
   if (!history) {
-    throw new Error('useHistory without RouterContext');
+    throw new Error('useHistory without RouterProvider');
   }
   return history;
 }
@@ -108,7 +108,7 @@ export function useHistory() {
 export function useLocation() {
   const location = useContext(LocationContext);
   if (!location) {
-    throw new Error('useLocation without RouterContext');
+    throw new Error('useLocation without RouterProvider');
   }
   return location;
 }

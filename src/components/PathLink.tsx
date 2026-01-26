@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useRouter } from '../context/RouterContext';
+import { useRouter } from '../context/RouterProvider';
 
 type PathLinkProps = {
   to: string;

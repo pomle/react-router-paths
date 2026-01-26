@@ -12,18 +12,18 @@ yarn add @pomle/paths @pomle/react-router-paths
 
 This package is similar to React Router, albeit stricter. A decision has been made that path params are considered always required for a path. If you require optional parameters, use two different paths, or implement using query params (see [`useQueryParams` hook](#usequeryparams)).
 
-## RouterContext
+## RouterProvider
 
 The React Context that provides routing information to the render tree. Needs a reference to `window.history`. Allows you to mock History for testing purposes.
 
 ```tsx
-import { RouterContext } from '@pomle/react-router-paths';
+import { RouterProvider } from '@pomle/react-router-paths';
 
 export function App() {
   return (
-    <RouterContext history={window.history}>
+    <RouterProvider history={window.history}>
       <RestOfYourApp />
-    </RouterContext>
+    </RouterProvider>
   );
 }
 ```
@@ -49,7 +49,7 @@ You **must** return `null` from the render function if you do not want that path
 
 ```tsx
 import { createPath, codecs } from '@pomle/paths';
-import { RouterContext, PathRoute } from '@pomle/react-router-paths';
+import { RouterProvider, PathRoute } from '@pomle/react-router-paths';
 
 const paths = {
   books: createPath('/books/:bookId', { bookId: codecs.string }),
@@ -57,7 +57,7 @@ const paths = {
 
 export function MyRouter() {
   return (
-    <RouterContext history={window.history}>
+    <RouterProvider history={window.history}>
       <PathRoute path={paths.books}>
         {(match) => {
           if (!match) {
@@ -72,7 +72,7 @@ export function MyRouter() {
           return <BookPage bookId={bookId} />;
         }}
       </PathRoute>
-    </RouterContext>
+    </RouterProvider>
   );
 }
 ```
@@ -83,7 +83,7 @@ The mount function is a utility that will provide the logic from the previous ex
 
 ```tsx
 import { createPath } from '@pomle/paths';
-import { RouterContext, PathRoute, mount } from '@pomle/react-router-paths';
+import { RouterProvider, PathRoute, mount } from '@pomle/react-router-paths';
 
 const paths = {
   books: createPath('/books/:bookId', { bookId: codecs.string }),
@@ -91,9 +91,9 @@ const paths = {
 
 export function MyRouter() {
   return (
-    <RouterContext history={window.history}>
+    <RouterProvider history={window.history}>
       <PathRoute path={paths.books}>{mount(BookPage)}</PathRoute>
-    </RouterContext>
+    </RouterProvider>
   );
 }
 ```

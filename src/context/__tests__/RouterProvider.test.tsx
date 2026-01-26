@@ -5,9 +5,9 @@ import { createContext } from '../../mocks/context';
 import { createPath } from '@pomle/paths';
 import { useNav } from '../../hooks/useNav';
 import { fireEvent, render, renderHook } from '@testing-library/react';
-import { useHistory, useLocation } from '../RouterContext';
+import { useHistory, useLocation } from '../RouterProvider';
 
-describe('RouterContext', () => {
+describe('RouterProvider', () => {
   const path = createPath('/my/path', {});
 
   it('provides a reference stable history object', () => {

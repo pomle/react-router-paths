@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Path, PathCodec, Query, QueryCodec } from '@pomle/paths';
-import { useHistory } from '../context/RouterContext';
+import { useHistory } from '../context/RouterProvider';
 
 type PathParams<Codec extends PathCodec> = Parameters<Path<Codec>['build']>[0];
 

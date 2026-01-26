@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouterContext } from '../context/RouterContext';
+import { RouterProvider } from '../context/RouterProvider';
 import { createHistoryMock } from './history';
 
 interface ContextProps {
@@ -13,9 +13,9 @@ export function createContext(entries: string[] = ['/']) {
 
   function Component({ children }: ContextProps) {
     return (
-      <RouterContext history={history} window={window}>
+      <RouterProvider history={history} window={window}>
         {children}
-      </RouterContext>
+      </RouterProvider>
     );
   }
 

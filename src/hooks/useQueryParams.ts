@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { buildQuery, parseQuery, Query, QueryCodec } from '@pomle/paths';
-import { useHistory, useWindow } from '../context/RouterContext';
+import { useHistory, useWindow } from '../context/RouterProvider';
 import { createParser } from '../lib/query';
 
 type Values<T extends QueryCodec> = ReturnType<Query<T>['parse']>;
