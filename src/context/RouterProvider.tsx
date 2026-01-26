@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 type BrowserHistory = Pick<
   globalThis.History,
@@ -80,4 +87,30 @@ export function useRouter() {
     history: useHistory(),
     window: useWindow(),
   };
+}
+
+export function useLocation() {
+  const window = useWindow();
+
+  const createLocation = useCallback(() => {
+    return new URL(window.location.href);
+  }, [window]);
+
+  const [location, setLocation] = useState<URL>(createLocation);
+
+  const updateLocation = useCallback(() => {
+    setLocation(createLocation);
+  }, [createLocation]);
+
+  useEffect(() => {
+    updateLocation();
+
+    window.addEventListener('popstate', updateLocation);
+
+    return () => {
+      window.removeEventListener('popstate', updateLocation);
+    };
+  }, [updateLocation, window]);
+
+  return location;
 }
