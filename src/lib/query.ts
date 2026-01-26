@@ -5,6 +5,8 @@ type ParamCache = { source: string; value: unknown };
 export function createParser<T extends QueryCodec>(query: Query<T>) {
   const memo = new Map<string, ParamCache[]>();
 
+  let previous: ReturnType<Query<T>['parse']> | undefined;
+
   function getCache(key: string) {
     let result = memo.get(key);
     if (!result) {
@@ -29,6 +31,7 @@ export function createParser<T extends QueryCodec>(query: Query<T>) {
             if (prev && prev.source === source) {
               output[index] = prev.value;
             } else {
+              previous = undefined;
               cache[index] = { value, source };
             }
           }
@@ -36,6 +39,13 @@ export function createParser<T extends QueryCodec>(query: Query<T>) {
       }
       cache.splice(output.length);
     }
+
+    if (previous) {
+      return previous;
+    }
+
+    previous = decoded;
+
     return decoded;
   };
 }
