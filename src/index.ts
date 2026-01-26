@@ -11,6 +11,7 @@ export {
   useRouter,
   useLocation,
   useHistory,
+  useWindow,
 } from './context/RouterProvider';
 
 // Legacy export for backwards compatibility
