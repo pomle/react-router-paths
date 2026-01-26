@@ -22,7 +22,7 @@ export function useQueryParams<T extends QueryCodec>(
   useEffect(() => {
     let params = stableParse(window.location.search);
 
-    function handlePopstate() {
+    function handleParams() {
       const nextParams = stableParse(window.location.search);
       if (params != nextParams) {
         setStableParams(nextParams);
@@ -30,10 +30,10 @@ export function useQueryParams<T extends QueryCodec>(
       }
     }
 
-    window.addEventListener('popstate', handlePopstate);
+    window.addEventListener('popstate', handleParams);
 
     return () => {
-      window.removeEventListener('popstate', handlePopstate);
+      window.removeEventListener('popstate', handleParams);
     };
   }, [window, stableParse]);
 
