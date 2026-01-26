@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { buildQuery, parseQuery, Query, QueryCodec } from '@pomle/paths';
 import { useHistory, useWindow } from '../context/RouterContext';
 import { createParser } from '../lib/query';
@@ -11,15 +11,31 @@ export function useQueryParams<T extends QueryCodec>(
   const history = useHistory();
   const window = useWindow();
 
-  const search = location.search;
-
-  const parse = useMemo(() => {
+  const stableParse = useMemo(() => {
     return createParser(query);
   }, [query]);
 
-  const params = useMemo(() => {
-    return parse(search);
-  }, [search, parse]);
+  const [params, setStableParams] = useState(() => {
+    return stableParse(window.location.search);
+  });
+
+  useEffect(() => {
+    let params = stableParse(window.location.search);
+
+    function handlePopstate() {
+      const nextParams = stableParse(window.location.search);
+      if (params != nextParams) {
+        setStableParams(nextParams);
+        params = nextParams;
+      }
+    }
+
+    window.addEventListener('popstate', handlePopstate);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopstate);
+    };
+  }, [window, stableParse]);
 
   const setParams = useCallback(
     (source: Partial<Values<T>>) => {
